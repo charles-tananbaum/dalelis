@@ -1,0 +1,131 @@
+---
+import { SITE, FEATURED_AREAS } from "~/lib/site";
+import Icon from "./Icon.astro";
+
+const services = [
+  { label: "Emergency Service", href: "/services/emergency-hvac/" },
+  { label: "AC Repair", href: "/services/ac-repair/" },
+  { label: "Heating Repair", href: "/services/heating-repair/" },
+  { label: "Water Heaters", href: "/services/water-heater-installation/" },
+  { label: "Plumbing", href: "/services/fixture-installation/" },
+  { label: "Heat Pumps", href: "/services/heat-pump/" },
+];
+
+const company = [
+  { label: "About", href: "/about/" },
+  { label: "Contact", href: "/contact/" },
+  { label: "Maintenance Plans", href: "/maintenance-plans/" },
+  { label: "Specials", href: "/specials/" },
+  { label: "Reviews", href: "/reviews/" },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative mt-24 lg:mt-32" style="background: var(--color-ink); color: var(--color-ivory);">
+  {/* Top band: BIG CTA */}
+  <div class="container-page py-16 lg:py-24 border-b" style="border-color: color-mix(in oklab, var(--color-ivory) 10%, transparent);">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      <div class="lg:col-span-7">
+        <span class="eyebrow" style="color: var(--color-brass);">24/7 Emergency Service</span>
+        <h2 class="font-display mt-4 text-4xl md:text-5xl lg:text-6xl" style="font-weight:400; letter-spacing:-0.025em; line-height:1;">
+          Heat out? Pipe burst?
+          <span class="block" style="font-style: italic; color: color-mix(in oklab, var(--color-ivory) 72%, var(--color-brass));">We're already on the way.</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-5 lg:pt-6">
+        <p class="text-base lg:text-lg" style="color: color-mix(in oklab, var(--color-ivory) 75%, transparent);">
+          Real humans answer our phone 24 hours a day, 7 days a week.
+          Licensed, insured, and trusted by thousands of homeowners across greater Norwood since {SITE.foundedYear}.
+        </p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href={SITE.phoneTel} class="btn btn-accent">
+            <Icon name="phone" size="1em" />
+            {SITE.phone}
+          </a>
+          <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="color: var(--color-ivory); border-color: color-mix(in oklab, var(--color-ivory) 28%, transparent);">
+            <Icon name="calendar" size="1em" />
+            Book Online
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Middle: columns */}
+  <div class="container-page py-14 lg:py-20 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-10">
+    <div class="col-span-2 lg:col-span-4">
+      <div class="flex items-center gap-3">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0"
+             style="background: var(--color-ivory); padding: 2px;">
+          <img src="/images/logo.jpg" alt="" class="w-full h-full object-contain rounded-full" loading="lazy" />
+        </div>
+        <div class="leading-none">
+          <div class="font-display text-lg" style="font-weight:500;">Dalelis Mechanical</div>
+          <div class="text-[0.7rem] uppercase tracking-[0.14em] mt-1 opacity-60">Plumbing · Heating · Cooling</div>
+        </div>
+      </div>
+      <address class="not-italic mt-6 text-sm leading-relaxed" style="color: color-mix(in oklab, var(--color-ivory) 72%, transparent);">
+        {SITE.legalName}<br />
+        {SITE.address.street}<br />
+        {SITE.address.city}, {SITE.address.state} {SITE.address.zip}
+      </address>
+      <div class="mt-5 space-y-2.5 text-sm">
+        <a href={SITE.phoneTel} class="flex items-center gap-2 hover:text-[var(--color-brass)] transition-colors">
+          <Icon name="phone" size="1em" /> {SITE.phone}
+        </a>
+        <a href={SITE.emailMailto} class="flex items-center gap-2 hover:text-[var(--color-brass)] transition-colors">
+          <Icon name="mail" size="1em" /> {SITE.email}
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2">
+      <h3 class="text-[0.7rem] uppercase tracking-[0.16em] font-medium mb-5" style="color: var(--color-brass);">Services</h3>
+      <ul class="space-y-2.5 text-sm" style="color: color-mix(in oklab, var(--color-ivory) 72%, transparent);">
+        {services.map((s) => (
+          <li><a href={s.href} class="hover:text-[var(--color-ivory)] transition-colors">{s.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="lg:col-span-2">
+      <h3 class="text-[0.7rem] uppercase tracking-[0.16em] font-medium mb-5" style="color: var(--color-brass);">Company</h3>
+      <ul class="space-y-2.5 text-sm" style="color: color-mix(in oklab, var(--color-ivory) 72%, transparent);">
+        {company.map((s) => (
+          <li><a href={s.href} class="hover:text-[var(--color-ivory)] transition-colors">{s.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="col-span-2 lg:col-span-4">
+      <h3 class="text-[0.7rem] uppercase tracking-[0.16em] font-medium mb-5" style="color: var(--color-brass);">Service Area</h3>
+      <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-sm" style="color: color-mix(in oklab, var(--color-ivory) 72%, transparent);">
+        {FEATURED_AREAS.map((a) => (
+          <a href={`/service-area/${a.toLowerCase()}/`} class="hover:text-[var(--color-ivory)] transition-colors">{a}</a>
+        ))}
+        <a href="/service-area/" class="hover:text-[var(--color-ivory)] transition-colors" style="color: var(--color-brass);">See all 40+ →</a>
+      </div>
+    </div>
+  </div>
+
+  {/* Bottom strip */}
+  <div class="border-t" style="border-color: color-mix(in oklab, var(--color-ivory) 10%, transparent);">
+    <div class="container-page py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs" style="color: color-mix(in oklab, var(--color-ivory) 55%, transparent);">
+      <div class="flex flex-col md:flex-row md:items-center gap-x-6 gap-y-1 text-center md:text-left">
+        <span>© {year} {SITE.legalName}</span>
+        <span>MA Master Plumbing #{SITE.licenses.masterPlumbing}</span>
+        <span>HVAC #{SITE.licenses.hvac}</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href={SITE.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="hover:text-[var(--color-ivory)] transition-colors">
+          <Icon name="facebook" size="1.1em" />
+        </a>
+        <a href={SITE.googleReviews} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-ivory)] transition-colors">
+          Google Reviews
+        </a>
+        <a href="/privacy/" class="hover:text-[var(--color-ivory)] transition-colors">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,30 @@
+---
+import { BRANDS_HVAC, BRANDS_WATER_HEATER, BRANDS_FIXTURES } from "~/lib/site";
+const all = [...BRANDS_HVAC, ...BRANDS_WATER_HEATER, ...BRANDS_FIXTURES];
+const doubled = [...all, ...all];
+---
+
+<section class="py-14 lg:py-20 overflow-hidden" style="background: var(--color-ivory);">
+  <div class="container-page text-center mb-10">
+    <span class="eyebrow">We service every major brand</span>
+    <h2 class="font-display mt-3 text-3xl lg:text-4xl" style="font-weight:450;">
+      NATE-certified on the brands that matter.
+    </h2>
+  </div>
+  <div class="relative overflow-hidden">
+    <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-32 z-10"
+         style="background: linear-gradient(90deg, var(--color-ivory), transparent);"></div>
+    <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-32 z-10"
+         style="background: linear-gradient(-90deg, var(--color-ivory), transparent);"></div>
+    <div class="marquee">
+      {doubled.map((brand) => (
+        <div class="flex-shrink-0 px-8 lg:px-12 flex items-center">
+          <span class="font-display text-2xl lg:text-[1.75rem] whitespace-nowrap"
+                style="font-weight:400; letter-spacing:-0.015em; color: color-mix(in oklab, var(--color-ink) 72%, transparent);">
+            {brand}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

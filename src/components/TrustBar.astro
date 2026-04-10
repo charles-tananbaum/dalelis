@@ -1,0 +1,27 @@
+---
+import { TRUST_BADGES } from "~/lib/site";
+import Icon from "./Icon.astro";
+
+const icons = ["award", "star", "clock", "shield"] as const;
+---
+
+<section class="relative py-12 lg:py-16 overflow-hidden" style="background: var(--color-cream);">
+  <div class="absolute inset-x-0 top-0 hairline"></div>
+  <div class="container-page">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+      {TRUST_BADGES.map((b, i) => (
+        <div class="flex items-start gap-4" data-reveal>
+          <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+               style="background: var(--color-ivory); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+            <Icon name={icons[i]} size="1.15em" />
+          </div>
+          <div class="min-w-0">
+            <div class="font-display text-xl lg:text-[1.4rem]" style="font-weight:450; letter-spacing:-0.015em;">{b.label}</div>
+            <div class="text-xs lg:text-sm mt-1" style="color: var(--color-slate);">{b.sub}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="absolute inset-x-0 bottom-0 hairline"></div>
+</section>

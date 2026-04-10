@@ -1,0 +1,115 @@
+---
+/**
+ * Editorial 4-tile gallery of technician / equipment photos.
+ * TODO: replace all Unsplash URLs below with real Dalelis job-site photography.
+ */
+import Icon from "./Icon.astro";
+import { SITE } from "~/lib/site";
+
+const tiles = [
+  {
+    src: "/images/stock/hvac/technician-rooftop.webp",
+    alt: "HVAC technician servicing a rooftop condenser with manifold gauges",
+    tag: "Rooftop AC service",
+    span: "lg:col-span-7 lg:row-span-2",
+    aspect: "aspect-[4/3] lg:aspect-auto lg:h-full",
+  },
+  {
+    src: "/images/stock/hvac/crew-heat-pump.webp",
+    alt: "Three technicians inspecting a residential heat pump",
+    tag: "Heat pump install",
+    span: "lg:col-span-5",
+    aspect: "aspect-[4/3]",
+  },
+  {
+    src: "/images/stock/plumbing/plumber-valves.jpg",
+    alt: "Plumber installing valves on copper supply lines",
+    tag: "Valve installation",
+    span: "lg:col-span-3",
+    aspect: "aspect-[4/5]",
+  },
+  {
+    src: "/images/stock/plumbing/plumber-sink.jpg",
+    alt: "Plumber repairing chrome P-trap under a sink",
+    tag: "Plumbing repair",
+    span: "lg:col-span-2",
+    aspect: "aspect-[4/5]",
+  },
+];
+---
+
+<section class="py-24 lg:py-36 overflow-hidden" style="background: var(--color-ivory);">
+  <div class="container-page">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end mb-14 lg:mb-20">
+      <div class="lg:col-span-7" data-reveal>
+        <span class="eyebrow">Our work</span>
+        <h2 class="mt-4 font-display text-4xl md:text-5xl lg:text-[4rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+          Boots on the ground,
+          <span class="block" style="font-style:italic;">across greater Norwood.</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-5" data-reveal>
+        <p class="text-base lg:text-lg" style="color: var(--color-slate);">
+          Our trucks are out every day — installing new systems, replacing worn-out equipment, and handling emergency calls across 40+ Massachusetts towns. Here's a look at what we do.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 lg:grid-rows-2 gap-4 lg:gap-5 lg:auto-rows-fr">
+      {/* Large hero tile */}
+      <figure class={`relative group rounded-2xl overflow-hidden ${tiles[0].span} ${tiles[0].aspect}`}
+              style="background: var(--color-cream); box-shadow: var(--shadow-soft);"
+              data-reveal>
+        <img src={tiles[0].src} alt={tiles[0].alt} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 50%, color-mix(in oklab, var(--color-ink) 72%, transparent) 100%);"></div>
+        <figcaption class="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4" style="color: var(--color-ivory);">
+          <div>
+            <div class="text-[0.7rem] uppercase tracking-[0.18em] font-medium mb-2" style="color: var(--color-brass);">{tiles[0].tag}</div>
+            <div class="font-display text-2xl lg:text-3xl" style="font-weight:450; letter-spacing:-0.015em;">
+              Honest work. Done right.
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      {/* Medium tile */}
+      <figure class={`relative group rounded-2xl overflow-hidden ${tiles[1].span} ${tiles[1].aspect}`}
+              style="background: var(--color-cream); box-shadow: var(--shadow-soft);"
+              data-reveal>
+        <img src={tiles[1].src} alt={tiles[1].alt} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 55%, color-mix(in oklab, var(--color-ink) 68%, transparent) 100%);"></div>
+        <figcaption class="absolute bottom-5 left-5 right-5" style="color: var(--color-ivory);">
+          <div class="text-[0.7rem] uppercase tracking-[0.18em] font-medium" style="color: var(--color-brass);">{tiles[1].tag}</div>
+        </figcaption>
+      </figure>
+
+      {/* Small tile 1 */}
+      <figure class={`relative group rounded-2xl overflow-hidden ${tiles[2].span} ${tiles[2].aspect}`}
+              style="background: var(--color-cream); box-shadow: var(--shadow-soft);"
+              data-reveal>
+        <img src={tiles[2].src} alt={tiles[2].alt} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 55%, color-mix(in oklab, var(--color-ink) 68%, transparent) 100%);"></div>
+        <figcaption class="absolute bottom-5 left-5 right-5" style="color: var(--color-ivory);">
+          <div class="text-[0.7rem] uppercase tracking-[0.18em] font-medium" style="color: var(--color-brass);">{tiles[2].tag}</div>
+        </figcaption>
+      </figure>
+
+      {/* Small tile 2 */}
+      <figure class={`relative group rounded-2xl overflow-hidden ${tiles[3].span} ${tiles[3].aspect}`}
+              style="background: var(--color-cream); box-shadow: var(--shadow-soft);"
+              data-reveal>
+        <img src={tiles[3].src} alt={tiles[3].alt} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 55%, color-mix(in oklab, var(--color-ink) 68%, transparent) 100%);"></div>
+        <figcaption class="absolute bottom-5 left-5 right-5" style="color: var(--color-ivory);">
+          <div class="text-[0.7rem] uppercase tracking-[0.18em] font-medium" style="color: var(--color-brass);">{tiles[3].tag}</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href={SITE.phoneTel} class="btn btn-primary">
+        <Icon name="phone" size="1em" /> Put us to work — {SITE.phone}
+      </a>
+    </div>
+  </div>
+</section>

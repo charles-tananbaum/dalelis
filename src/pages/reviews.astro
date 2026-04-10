@@ -1,0 +1,89 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import TrustBar from "~/components/TrustBar.astro";
+import { SITE } from "~/lib/site";
+import { getCollection } from "astro:content";
+
+const testimonials = await getCollection("testimonials");
+---
+
+<BaseLayout
+  title={`Customer Reviews | ${SITE.name} | 4.9★ on Google`}
+  description={`Read verified customer reviews for Dalelis Mechanical. Rated 4.9/5 on Google for plumbing and HVAC service in Norwood, MA and 40+ surrounding towns.`}
+>
+  <section class="py-20 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="max-w-4xl" data-reveal>
+        <span class="eyebrow">Reviews</span>
+        <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[6rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+          Real words
+          <span class="block" style="font-style:italic;">from real neighbors.</span>
+        </h1>
+        <div class="mt-10 flex flex-wrap items-center gap-6 pt-8 dashed-top">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1" style="color: var(--color-brass);">
+              {[...Array(5)].map(() => <Icon name="star" size="1.5em" />)}
+            </div>
+            <div>
+              <div class="font-display text-3xl" style="font-weight:500;">4.9 / 5</div>
+              <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Google Rating</div>
+            </div>
+          </div>
+          <a href={SITE.googleReviews} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            Leave a review on Google <Icon name="arrow-right" size="1em" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TrustBar />
+
+  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="grid md:grid-cols-2 gap-5 lg:gap-6">
+        {testimonials.map((t, i) => (
+          <figure class={`relative rounded-2xl p-8 lg:p-10 ${i % 3 === 1 ? 'md:translate-y-6' : ''}`}
+                  style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+                  data-reveal>
+            <div class="absolute top-6 right-8 font-display text-8xl leading-none opacity-10" style="font-weight:500;">"</div>
+            <div class="flex items-center gap-0.5 mb-5" style="color: var(--color-brass);">
+              {[...Array(t.data.rating)].map(() => <Icon name="star" size="1.05em" />)}
+            </div>
+            <blockquote class="font-display text-[1.4rem] lg:text-[1.6rem] leading-snug relative" style="font-weight:400; letter-spacing:-0.01em;">
+              {t.body}
+            </blockquote>
+            <figcaption class="mt-8 pt-6 flex items-center justify-between dashed-top">
+              <div>
+                <div class="font-medium text-base">{t.data.name}</div>
+                {t.data.service && (
+                  <div class="text-xs mt-0.5" style="color: var(--color-slate);">{t.data.service}</div>
+                )}
+              </div>
+              <div class="flex items-center gap-2 text-xs uppercase tracking-widest" style="color: var(--color-slate);">
+                <span>Verified on</span>
+                <span style="color: var(--color-ink); font-weight:600;">{t.data.source}</span>
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div class="mt-20 text-center max-w-2xl mx-auto" data-reveal>
+        <span class="eyebrow">Want to share yours?</span>
+        <h2 class="mt-4 font-display text-3xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em;">
+          We'd love to hear about your experience.
+        </h2>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href={SITE.googleReviews} target="_blank" rel="noopener noreferrer" class="btn btn-accent">
+            Review us on Google <Icon name="arrow-right" size="1em" />
+          </a>
+          <a href={SITE.phoneTel} class="btn btn-ghost">
+            <Icon name="phone" size="1em" /> {SITE.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

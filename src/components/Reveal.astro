@@ -1,0 +1,16 @@
+---
+/**
+ * Wrapper that fades up on scroll via IntersectionObserver.
+ * Initialized globally in BaseLayout.
+ */
+interface Props {
+  as?: string;
+  class?: string;
+  delay?: number;
+}
+const { as: Tag = "div", class: cls = "", delay = 0 } = Astro.props;
+---
+
+<Tag class={cls} data-reveal style={delay ? `transition-delay: ${delay}ms` : undefined}>
+  <slot />
+</Tag>

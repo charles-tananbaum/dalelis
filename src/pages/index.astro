@@ -1,0 +1,422 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import RequestForm from "~/components/RequestForm.astro";
+import TrustBar from "~/components/TrustBar.astro";
+import BrandsMarquee from "~/components/BrandsMarquee.astro";
+import CertificationsStrip from "~/components/CertificationsStrip.astro";
+import OurWorkGallery from "~/components/OurWorkGallery.astro";
+import { SITE, FEATURED_AREAS } from "~/lib/site";
+import { getCollection } from "astro:content";
+
+const testimonials = (await getCollection("testimonials"))
+  .filter((t) => t.data.featured)
+  .slice(0, 4);
+
+const services = (await getCollection("services"))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const heroServices = [
+  {
+    title: "Air Conditioning",
+    href: "/services/ac-repair/",
+    desc: "Central air, mini-splits, heat pumps",
+    icon: "snowflake",
+    image: "/images/stock/hvac/residential-ac.jpg",
+  },
+  {
+    title: "Heating",
+    href: "/services/heating-repair/",
+    desc: "Furnaces, boilers, heat pumps",
+    icon: "flame",
+    image: "/images/stock/hvac/crew-heat-pump.webp",
+  },
+  {
+    title: "Plumbing",
+    href: "/services/fixture-installation/",
+    desc: "Fixtures, leaks, water lines",
+    icon: "droplet",
+    image: "/images/stock/plumbing/plumber-valves.jpg",
+  },
+  {
+    title: "Water Heaters",
+    href: "/services/water-heater-installation/",
+    desc: "Tank, tankless, heat pump",
+    icon: "pipe",
+    image: "/images/stock/plumbing/plumber-sink.jpg",
+  },
+];
+
+const processSteps = [
+  {
+    n: "01",
+    title: "Request Your Service",
+    body: "Call us or fill out the form. We'll confirm your appointment and schedule a time that works for your day.",
+  },
+  {
+    n: "02",
+    title: "Technician Arrives",
+    body: "A licensed technician arrives on time, diagnoses the issue, and explains your options in plain language before any work begins.",
+  },
+  {
+    n: "03",
+    title: "Satisfaction Guaranteed",
+    body: "We don't leave until the job is done right. If you're not satisfied, we'll make it right — or refund your money.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Do you offer emergency plumbing and HVAC services?",
+    a: "Yes. We provide fast emergency service for urgent plumbing issues, no-heat situations, AC failures, leaks, and other problems that need immediate attention — 24 hours a day, 7 days a week.",
+  },
+  {
+    q: "What areas do you serve?",
+    a: "We proudly serve Norwood, Walpole, Westwood, Canton, Dedham, Medfield, Sharon, and 40+ surrounding Massachusetts communities.",
+  },
+  {
+    q: "What types of HVAC systems do you work on?",
+    a: "We repair, install, and maintain furnaces, boilers, central AC systems, heat pumps, mini splits, and steam or forced hot water heating systems from every major manufacturer.",
+  },
+  {
+    q: "Do you provide estimates before starting work?",
+    a: "Yes. We offer clear, upfront pricing and review the recommended work with you before any repairs or installations begin.",
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<BaseLayout
+  title="Norwood's Plumbing & HVAC Specialists | Dalelis Mechanical"
+  description={`24/7 emergency plumbing, heating, and AC service in Norwood, MA and 40+ surrounding towns. Licensed, insured, rated 4.9★ on Google since ${SITE.foundedYear}. Call ${SITE.phone}.`}
+  schema={faqSchema}
+>
+  {/* ============================================================ */}
+  {/* HERO */}
+  {/* ============================================================ */}
+  <section class="relative overflow-hidden" style="background: var(--color-ivory);">
+    {/* Background photo — HVAC technician at work */}
+    <div class="absolute inset-0">
+      <img
+        src="/images/stock/hvac/technician-rooftop.webp"
+        alt=""
+        class="w-full h-full object-cover"
+        style="filter: brightness(0.98) saturate(0.95); object-position: center right;"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0" style="background: linear-gradient(100deg, var(--color-ivory) 38%, color-mix(in oklab, var(--color-ivory) 86%, transparent) 58%, transparent 88%);"></div>
+      <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 58%, var(--color-ivory) 100%);"></div>
+    </div>
+
+    <div class="relative container-page pt-16 lg:pt-24 pb-24 lg:pb-36">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        {/* Left: headline block */}
+        <div class="lg:col-span-7 relative">
+          <div class="fade-up">
+            <span class="eyebrow">Est. {SITE.foundedYear} · Norwood, MA</span>
+          </div>
+
+          <h1 class="fade-up mt-6 font-display text-[2.75rem] sm:text-[3.5rem] lg:text-[5rem] xl:text-[5.75rem]"
+              style="font-weight:400; line-height:0.95; letter-spacing: -0.035em; animation-delay:120ms;">
+            Norwood's
+            <span class="block" style="font-style: italic; font-weight:300;">plumbing &amp; HVAC</span>
+            <span class="relative inline-block">
+              specialists.
+              <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 300 10" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 5 Q 75 1, 150 5 T 300 5" stroke="var(--color-brass)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+              </svg>
+            </span>
+          </h1>
+
+          <p class="fade-up mt-8 text-lg lg:text-xl max-w-xl" style="color: var(--color-slate); animation-delay:240ms;">
+            Honest diagnostics, licensed workmanship, and real humans on the phone — 24/7.
+            Trusted by homeowners across greater Norwood since {SITE.foundedYear}.
+          </p>
+
+          {/* Rating + CTAs */}
+          <div class="fade-up mt-10 flex flex-wrap items-center gap-4" style="animation-delay:360ms;">
+            <a href={SITE.phoneTel} class="btn btn-primary text-base">
+              <Icon name="phone" size="1em" />
+              {SITE.phone}
+            </a>
+            <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="btn btn-accent text-base">
+              <Icon name="calendar" size="1em" />
+              Book Online
+            </a>
+          </div>
+
+          <div class="fade-up mt-8 flex items-center gap-4 pt-6 dashed-top" style="animation-delay:480ms;">
+            <div class="flex items-center gap-0.5" style="color: var(--color-brass);">
+              {[...Array(5)].map(() => (
+                <Icon name="star" size="1.05em" />
+              ))}
+            </div>
+            <div class="text-sm" style="color: var(--color-ink);">
+              <strong style="font-weight:600;">4.9 / 5</strong>
+              <span style="color: var(--color-slate);"> · Hundreds of 5-star Google reviews</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: request form card */}
+        <div class="lg:col-span-5 relative fade-up" style="animation-delay:300ms;">
+          <RequestForm variant="card" heading="Request Service" subheading="Tell us what you need. We'll call to confirm within the hour." />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ */}
+  {/* TRUST BAR */}
+  {/* ============================================================ */}
+  <TrustBar />
+
+  {/* ============================================================ */}
+  {/* CERTIFICATIONS STRIP */}
+  {/* ============================================================ */}
+  <CertificationsStrip />
+
+  {/* ============================================================ */}
+  {/* SERVICES OVERVIEW */}
+  {/* ============================================================ */}
+  <section class="py-24 lg:py-36" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-end mb-16 lg:mb-20">
+        <div class="lg:col-span-7" data-reveal>
+          <span class="eyebrow">What we do</span>
+          <h2 class="mt-4 font-display text-4xl md:text-5xl lg:text-[4rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+            Whole-home comfort,
+            <span class="block" style="font-style: italic;">from one local team.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-5" data-reveal>
+          <p class="text-base lg:text-lg" style="color: var(--color-slate);">
+            We're licensed for both plumbing and HVAC, which means one team, one call, and one company accountable for every pipe and piece of equipment in your home.
+          </p>
+          <a href="/services/" class="btn btn-ghost mt-6">
+            See all services
+            <Icon name="arrow-right" size="1em" />
+          </a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        {heroServices.map((s, i) => (
+          <a href={s.href} class="group relative block rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+             style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent); box-shadow: var(--shadow-soft);"
+             data-reveal>
+            {/* Image */}
+            <div class="relative aspect-[4/3] overflow-hidden" style="background: var(--color-sand);">
+              <img src={s.image} alt="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+              <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 55%, color-mix(in oklab, var(--color-ink) 45%, transparent) 100%);"></div>
+              <div class="absolute top-4 right-4 font-display text-2xl" style="color: var(--color-ivory); font-weight:300; text-shadow: 0 1px 8px rgba(0,0,0,0.3);">0{i + 1}</div>
+              <div class="absolute bottom-4 left-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm"
+                   style="background: color-mix(in oklab, var(--color-ivory) 92%, transparent); color: var(--color-brass);">
+                <Icon name={s.icon} size="1.1em" />
+              </div>
+            </div>
+            {/* Text */}
+            <div class="p-6 lg:p-7">
+              <h3 class="font-display text-2xl lg:text-[1.55rem]" style="font-weight:500;">{s.title}</h3>
+              <p class="mt-2 text-sm" style="color: var(--color-slate);">{s.desc}</p>
+              <div class="mt-5 flex items-center gap-2 text-sm font-medium transition-transform group-hover:translate-x-1" style="color: var(--color-brass);">
+                Explore
+                <Icon name="arrow-right" size="1em" />
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ */}
+  {/* OUR WORK GALLERY */}
+  {/* ============================================================ */}
+  <OurWorkGallery />
+
+  {/* ============================================================ */}
+  {/* PROCESS / HOW WE WORK */}
+  {/* ============================================================ */}
+  <section class="relative py-24 lg:py-36 overflow-hidden" style="background: var(--color-cream);">
+    <div class="container-page">
+      <div class="max-w-3xl" data-reveal>
+        <span class="eyebrow">How we work</span>
+        <h2 class="mt-4 font-display text-4xl md:text-5xl lg:text-[4rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+          Three steps.
+          <span style="font-style:italic;"> No surprises.</span>
+        </h2>
+        <p class="mt-5 text-base lg:text-lg" style="color: var(--color-slate);">
+          No upsells, no blind part-swapping, no gotchas on the invoice. Just the calm, predictable service you'd want from a neighbor.
+        </p>
+      </div>
+
+      <div class="mt-16 lg:mt-20 grid lg:grid-cols-3 gap-8 lg:gap-12 relative">
+        {processSteps.map((step, i) => (
+          <div class="relative" data-reveal>
+            <div class="number-marker mb-6">{step.n}</div>
+            <h3 class="font-display text-2xl lg:text-[1.65rem] mb-3" style="font-weight:500;">{step.title}</h3>
+            <p class="text-base" style="color: var(--color-slate);">{step.body}</p>
+            {i < processSteps.length - 1 && (
+              <div class="hidden lg:block absolute top-7 left-[8rem] right-[-2rem] h-px" style="background: linear-gradient(90deg, color-mix(in oklab, var(--color-ink) 22%, transparent) 0%, transparent 100%);"></div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ */}
+  {/* REVIEWS */}
+  {/* ============================================================ */}
+  <section class="py-24 lg:py-36" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end mb-14">
+        <div class="lg:col-span-7" data-reveal>
+          <span class="eyebrow">Real customers</span>
+          <h2 class="mt-4 font-display text-4xl md:text-5xl lg:text-[4rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+            Hear it from
+            <span style="font-style:italic;"> your neighbors.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-5 flex flex-col sm:flex-row items-start sm:items-end gap-4" data-reveal>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-0.5" style="color: var(--color-brass);">
+              {[...Array(5)].map(() => <Icon name="star" size="1.1em" />)}
+            </div>
+            <div>
+              <div class="font-display text-xl" style="font-weight:500;">4.9 on Google</div>
+              <div class="text-xs" style="color: var(--color-slate);">Hundreds of reviews</div>
+            </div>
+          </div>
+          <a href={SITE.googleReviews} target="_blank" rel="noopener noreferrer" class="btn btn-ghost ml-auto">
+            Read all reviews
+            <Icon name="arrow-right" size="1em" />
+          </a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5 lg:gap-6">
+        {testimonials.map((t) => (
+          <figure class="relative rounded-2xl p-8 lg:p-10"
+                  style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+                  data-reveal>
+            <div class="absolute top-6 right-8 font-display text-7xl leading-none opacity-10" style="font-weight:500;">"</div>
+            <div class="flex items-center gap-0.5 mb-4" style="color: var(--color-brass);">
+              {[...Array(t.data.rating)].map(() => <Icon name="star" size="1em" />)}
+            </div>
+            <blockquote class="font-display text-[1.3rem] lg:text-[1.4rem] leading-snug relative" style="font-weight:400; letter-spacing:-0.01em;">
+              {t.body}
+            </blockquote>
+            <figcaption class="mt-6 pt-5 flex items-center justify-between dashed-top">
+              <div>
+                <div class="font-medium text-sm">{t.data.name}</div>
+                {t.data.service && (
+                  <div class="text-xs mt-0.5" style="color: var(--color-slate);">{t.data.service}</div>
+                )}
+              </div>
+              <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">{t.data.source}</div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ */}
+  {/* SERVICE AREA */}
+  {/* ============================================================ */}
+  <section class="relative py-24 lg:py-36 overflow-hidden" style="background: var(--color-ink); color: var(--color-ivory);">
+    {/* Subtle map texture background */}
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle at 20% 30%, #FAF7F1 1px, transparent 1px), radial-gradient(circle at 70% 60%, #FAF7F1 1px, transparent 1px); background-size: 60px 60px, 80px 80px;"></div>
+
+    <div class="relative container-page">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
+        <div class="lg:col-span-5" data-reveal>
+          <span class="eyebrow" style="color: var(--color-brass);">Where we work</span>
+          <h2 class="mt-4 font-display text-4xl md:text-5xl lg:text-[4rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+            Proudly serving
+            <span class="block" style="font-style:italic; color: color-mix(in oklab, var(--color-ivory) 70%, var(--color-brass));">40+ Massachusetts towns.</span>
+          </h2>
+          <p class="mt-6 text-base lg:text-lg" style="color: color-mix(in oklab, var(--color-ivory) 72%, transparent);">
+            Headquartered in Norwood, dispatched across the greater Boston south and west suburbs. If you see our truck in your neighborhood, you're not alone.
+          </p>
+          <a href="/service-area/" class="btn mt-8" style="background: var(--color-ivory); color: var(--color-ink);">
+            See all service areas
+            <Icon name="arrow-right" size="1em" />
+          </a>
+        </div>
+
+        <div class="lg:col-span-7" data-reveal>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+            {FEATURED_AREAS.map((area) => (
+              <a href={`/service-area/${area.toLowerCase()}/`}
+                 class="group flex items-center justify-between p-5 rounded-xl transition-all hover:-translate-y-0.5"
+                 style="background: color-mix(in oklab, var(--color-ivory) 6%, transparent); border: 1px solid color-mix(in oklab, var(--color-ivory) 14%, transparent);">
+                <div class="flex items-center gap-3">
+                  <Icon name="map-pin" size="1em" />
+                  <span class="font-display text-lg" style="font-weight:450;">{area}</span>
+                </div>
+                <Icon name="chevron-right" size="1em" />
+              </a>
+            ))}
+          </div>
+          <p class="mt-4 text-xs uppercase tracking-widest" style="color: color-mix(in oklab, var(--color-ivory) 55%, transparent);">
+            + Arlington · Brookline · Needham · Newton · Wellesley · Waltham · Watertown · and many more
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ */}
+  {/* BRANDS */}
+  {/* ============================================================ */}
+  <BrandsMarquee />
+
+  {/* ============================================================ */}
+  {/* FAQ */}
+  {/* ============================================================ */}
+  <section class="py-24 lg:py-36" style="background: var(--color-cream);">
+    <div class="container-page grid lg:grid-cols-12 gap-12 lg:gap-20">
+      <div class="lg:col-span-5" data-reveal>
+        <span class="eyebrow">FAQ</span>
+        <h2 class="mt-4 font-display text-4xl md:text-5xl lg:text-[4rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+          Questions,
+          <span class="block" style="font-style:italic;">answered.</span>
+        </h2>
+        <p class="mt-5 text-base lg:text-lg" style="color: var(--color-slate);">
+          Can't find what you're looking for? Call us at {SITE.phone} and we'll answer it in plain language.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="space-y-0">
+          {faqs.map((f, i) => (
+            <details class="group py-6 dashed-bottom" open={i === 0} data-reveal>
+              <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                <h3 class="font-display text-[1.35rem] lg:text-[1.5rem]" style="font-weight:500;">{f.q}</h3>
+                <div class="flex-shrink-0 mt-1.5 transition-transform group-open:rotate-180" style="color: var(--color-brass);">
+                  <Icon name="chevron-down" size="1.2em" />
+                </div>
+              </summary>
+              <div class="mt-4 text-base lg:text-lg pr-10" style="color: var(--color-slate);">
+                {f.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

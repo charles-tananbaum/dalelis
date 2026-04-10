@@ -1,0 +1,108 @@
+---
+/**
+ * Real certification & partner logos.
+ * Each logo file is served from /public/images/certifications/
+ */
+
+interface Cert {
+  id: string;
+  name: string;
+  caption: string;
+  src: string;
+  /** Natural aspect ratio hint for layout — portrait, landscape, or square */
+  shape?: "portrait" | "landscape" | "square";
+}
+
+const certs: Cert[] = [
+  {
+    id: "nate",
+    name: "NATE",
+    caption: "North American Technician Excellence",
+    src: "/images/certifications/nate.png",
+    shape: "landscape",
+  },
+  {
+    id: "masssave",
+    name: "Mass Save",
+    caption: "Residential Program Partner",
+    src: "/images/certifications/mass-save.png",
+    shape: "landscape",
+  },
+  {
+    id: "phcc",
+    name: "PHCC · CEP",
+    caption: "Plumbing-Heating-Cooling Contractors",
+    src: "/images/certifications/phcc.webp",
+    shape: "landscape",
+  },
+  {
+    id: "epa",
+    name: "EPA 608",
+    caption: "Refrigerant Handling Certified",
+    src: "/images/certifications/epa-608.png",
+    shape: "square",
+  },
+  {
+    id: "iapmo",
+    name: "IAPMO",
+    caption: "Plumbing Code Training & Education",
+    src: "/images/certifications/iapmo.png",
+    shape: "landscape",
+  },
+  {
+    id: "bbb",
+    name: "BBB Accredited",
+    caption: "Better Business Bureau",
+    src: "/images/certifications/bbb.png",
+    shape: "portrait",
+  },
+  {
+    id: "ma",
+    name: "Commonwealth of MA",
+    caption: "Licensed #16185 · HVAC #6433",
+    src: "/images/certifications/ma-seal.png",
+    shape: "square",
+  },
+];
+---
+
+<section class="relative py-20 lg:py-28" style="background: var(--color-ivory);">
+  <div class="absolute inset-x-0 top-0 hairline"></div>
+
+  <div class="container-page">
+    <div class="text-center mb-14" data-reveal>
+      <span class="eyebrow" style="justify-content:center;">Credentials & partners</span>
+      <h2 class="mt-4 font-display text-3xl md:text-4xl lg:text-5xl max-w-3xl mx-auto" style="font-weight:450; letter-spacing:-0.025em; line-height:1;">
+        Certified, licensed, and trusted
+        <span style="font-style: italic;"> by the names that matter.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 lg:gap-5 max-w-6xl mx-auto">
+      {certs.map((cert) => (
+        <div class="group flex flex-col items-center text-center p-5 lg:p-6 rounded-2xl transition-all hover:-translate-y-1"
+             style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+             data-reveal>
+          <div class="flex items-center justify-center h-20 lg:h-24 mb-3 w-full">
+            <img
+              src={cert.src}
+              alt={`${cert.name} logo`}
+              class="max-h-full max-w-full object-contain"
+              style="filter: drop-shadow(0 1px 2px rgba(12,26,46,0.06));"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div class="text-[0.72rem] font-semibold leading-tight" style="color: var(--color-ink);">{cert.name}</div>
+          <div class="text-[0.65rem] mt-1 leading-tight" style="color: var(--color-slate);">{cert.caption}</div>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-10 text-center text-xs max-w-2xl mx-auto" style="color: var(--color-slate);">
+      Dalelis Mechanical holds MA Master Plumbing License #16185 and HVAC License #6433, carries full liability insurance and workers' compensation, and partners with the Mass Save residential program.
+    </p>
+  </div>
+
+  <div class="absolute inset-x-0 bottom-0 hairline"></div>
+</section>

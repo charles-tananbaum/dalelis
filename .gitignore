@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.production
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Claude Code local settings (personal permission prefs)
+.claude/settings.local.json

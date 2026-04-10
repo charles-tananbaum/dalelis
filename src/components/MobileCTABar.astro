@@ -1,0 +1,15 @@
+---
+import { SITE } from "~/lib/site";
+import Icon from "./Icon.astro";
+---
+
+<div class="mobile-cta-bar" aria-label="Quick actions">
+  <a href={SITE.phoneTel}>
+    <Icon name="phone" size="1em" />
+    Call Now
+  </a>
+  <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="primary">
+    <Icon name="calendar" size="1em" />
+    Book Online
+  </a>
+</div>

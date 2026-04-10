@@ -1,0 +1,31 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { SITE } from "~/lib/site";
+---
+
+<BaseLayout
+  title={`Privacy Policy | ${SITE.name}`}
+  description="Privacy policy for Dalelis Mechanical."
+  noindex
+>
+  <section class="py-20 lg:py-28" style="background: var(--color-ivory);">
+    <div class="container-narrow">
+      <span class="eyebrow">Legal</span>
+      <h1 class="mt-4 font-display text-5xl lg:text-6xl" style="font-weight:450; letter-spacing:-0.025em;">Privacy Policy</h1>
+      <div class="mt-10 text-base lg:text-lg space-y-6" style="color: var(--color-slate);">
+        <p>
+          {SITE.legalName} ("we", "us") respects your privacy. This page is a short summary — full policy available on request.
+        </p>
+        <p>
+          <strong>Information we collect.</strong> When you contact us through the request form, phone, or booking portal, we collect your name, phone number, email, ZIP code, and a description of the service you need. We use this only to provide the service you requested.
+        </p>
+        <p>
+          <strong>What we don't do.</strong> We don't sell your information, we don't share it with third parties for marketing, and we don't send you promotional emails without your consent.
+        </p>
+        <p>
+          <strong>Contact us.</strong> Questions about privacy? Email <a href={SITE.emailMailto} class="underline" style="color: var(--color-ink);">{SITE.email}</a> or call <a href={SITE.phoneTel} class="underline" style="color: var(--color-ink);">{SITE.phone}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

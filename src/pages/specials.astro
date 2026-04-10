@@ -1,0 +1,108 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import RequestForm from "~/components/RequestForm.astro";
+import { SITE } from "~/lib/site";
+---
+
+<BaseLayout
+  title={`Specials & Financing | ${SITE.name}`}
+  description="Current specials, 0% financing, and Mass Save rebates on HVAC and plumbing in Norwood, MA. Call Dalelis Mechanical for today's best pricing."
+>
+  <section class="py-20 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="max-w-4xl" data-reveal>
+        <span class="eyebrow">Specials & Financing</span>
+        <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[6rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+          Save on your next
+          <span class="block" style="font-style:italic;">service or install.</span>
+        </h1>
+        <p class="mt-8 text-lg lg:text-xl max-w-2xl" style="color: var(--color-slate);">
+          We update our specials regularly based on the season and manufacturer promotions. Call us for today's best pricing — and always ask about Mass Save rebates.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page grid lg:grid-cols-12 gap-8 lg:gap-10">
+      {/* 0% Financing card */}
+      <div class="lg:col-span-6 relative rounded-2xl p-10 lg:p-14 overflow-hidden"
+           style="background: var(--color-ink); color: var(--color-ivory);"
+           data-reveal>
+        <div class="absolute top-6 right-6 font-display text-[9rem] leading-none opacity-10" style="font-weight:300;">0%</div>
+        <div class="relative">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs uppercase tracking-widest mb-6"
+               style="background: color-mix(in oklab, var(--color-brass) 25%, transparent); color: var(--color-brass); font-weight:600;">
+            <Icon name="zap" size="0.9em" /> Promotional
+          </div>
+          <h2 class="font-display text-4xl lg:text-[3.5rem]" style="font-weight:400; letter-spacing:-0.025em; line-height:1;">
+            0% financing available
+          </h2>
+          <p class="mt-5 text-base lg:text-lg" style="color: color-mix(in oklab, var(--color-ivory) 75%, transparent);">
+            Qualifying HVAC installations come with flexible financing options — including 0% APR for qualified buyers. Ask for details when you request an estimate.
+          </p>
+          <a href={SITE.phoneTel} class="btn btn-accent mt-8">
+            <Icon name="phone" size="1em" /> Ask about financing
+          </a>
+        </div>
+      </div>
+
+      {/* Mass Save card */}
+      <div class="lg:col-span-6 relative rounded-2xl p-10 lg:p-14 overflow-hidden"
+           style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+           data-reveal>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs uppercase tracking-widest mb-6"
+             style="background: color-mix(in oklab, var(--color-evergreen) 12%, transparent); color: var(--color-evergreen); font-weight:600;">
+          <Icon name="shield" size="0.9em" /> Mass Save Partner
+        </div>
+        <h2 class="font-display text-4xl lg:text-[3.5rem]" style="font-weight:400; letter-spacing:-0.025em; line-height:1;">
+          Heat pump rebates
+        </h2>
+        <p class="mt-5 text-base lg:text-lg" style="color: var(--color-slate);">
+          Massachusetts Mass Save offers some of the most generous heat pump and weatherization rebates in the country. As a participating partner, we help you navigate the paperwork and claim every dollar you're eligible for.
+        </p>
+        <a href={SITE.phoneTel} class="btn btn-primary mt-8">
+          <Icon name="phone" size="1em" /> Check rebate eligibility
+        </a>
+      </div>
+
+      {/* Current specials call-to-action */}
+      <div class="lg:col-span-12 relative rounded-2xl p-10 lg:p-14 overflow-hidden"
+           style="background: var(--color-ivory); border: 1px dashed color-mix(in oklab, var(--color-ink) 22%, transparent);"
+           data-reveal>
+        <div class="grid lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-8">
+            <span class="eyebrow">This month</span>
+            <h2 class="mt-4 font-display text-3xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em; line-height:1;">
+              Ask about our current specials.
+            </h2>
+            <p class="mt-5 text-base lg:text-lg" style="color: var(--color-slate);">
+              Our promotions rotate with the season — tune-up discounts in spring and fall, water heater rebates through the winter, and manufacturer deals on new installs year-round. Call us for today's best pricing and we'll apply every discount that fits your job.
+            </p>
+          </div>
+          <div class="lg:col-span-4 flex flex-col gap-3">
+            <a href={SITE.phoneTel} class="btn btn-accent">
+              <Icon name="phone" size="1em" /> {SITE.phone}
+            </a>
+            <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+              <Icon name="calendar" size="1em" /> Book Online
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 lg:py-32" style="background: var(--color-cream);">
+    <div class="container-page max-w-4xl">
+      <div class="text-center mb-10" data-reveal>
+        <span class="eyebrow">Start saving today</span>
+        <h2 class="mt-4 font-display text-4xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em;">
+          Request service.
+        </h2>
+      </div>
+      <RequestForm />
+    </div>
+  </section>
+</BaseLayout>

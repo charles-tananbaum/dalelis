@@ -1,0 +1,110 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import RequestForm from "~/components/RequestForm.astro";
+import { SITE } from "~/lib/site";
+---
+
+<BaseLayout
+  title={`Contact ${SITE.name} | Norwood, MA Plumbing & HVAC`}
+  description={`Contact Dalelis Mechanical for licensed plumbing and HVAC service in Norwood, MA. Call ${SITE.phone} or schedule online 24/7.`}
+>
+  <section class="py-20 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
+        {/* Left: content */}
+        <div class="lg:col-span-5">
+          <div data-reveal>
+            <span class="eyebrow">Contact</span>
+            <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[5.5rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+              Get in
+              <span style="font-style:italic;"> touch.</span>
+            </h1>
+            <p class="mt-6 text-lg" style="color: var(--color-slate);">
+              Real humans answer our phone 24 hours a day, 7 days a week. For fastest service, call us directly.
+            </p>
+          </div>
+
+          <div class="mt-12 space-y-6" data-reveal>
+            <a href={SITE.phoneTel}
+               class="block p-6 rounded-2xl transition-all hover:-translate-y-0.5"
+               style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: var(--color-ink); color: var(--color-ivory);">
+                  <Icon name="phone" size="1.15em" />
+                </div>
+                <div>
+                  <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Call 24/7</div>
+                  <div class="font-display text-2xl" style="font-weight:500;">{SITE.phone}</div>
+                </div>
+              </div>
+            </a>
+
+            <a href={SITE.booking} target="_blank" rel="noopener noreferrer"
+               class="block p-6 rounded-2xl transition-all hover:-translate-y-0.5"
+               style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: var(--color-brass); color: var(--color-ivory);">
+                  <Icon name="calendar" size="1.15em" />
+                </div>
+                <div>
+                  <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Online booking</div>
+                  <div class="font-display text-2xl" style="font-weight:500;">Schedule via Housecall Pro</div>
+                </div>
+              </div>
+            </a>
+
+            <a href={SITE.emailMailto}
+               class="block p-6 rounded-2xl transition-all hover:-translate-y-0.5"
+               style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
+                  <Icon name="mail" size="1.15em" />
+                </div>
+                <div>
+                  <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Email</div>
+                  <div class="font-display text-lg break-all" style="font-weight:500;">{SITE.email}</div>
+                </div>
+              </div>
+            </a>
+
+            <div class="p-6 rounded-2xl"
+                 style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
+                  <Icon name="map-pin" size="1.15em" />
+                </div>
+                <div>
+                  <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Address</div>
+                  <address class="not-italic mt-1 font-display text-lg" style="font-weight:500;">
+                    {SITE.address.street}<br />
+                    {SITE.address.city}, {SITE.address.state} {SITE.address.zip}
+                  </address>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-2xl"
+                 style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
+                  <Icon name="clock" size="1.15em" />
+                </div>
+                <div>
+                  <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Hours</div>
+                  <div class="font-display text-lg mt-1" style="font-weight:500;">Open 24 / 7</div>
+                  <div class="text-sm mt-1" style="color: var(--color-slate);">Office callbacks: Mon–Fri 7am–6pm</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: form */}
+        <div class="lg:col-span-7" data-reveal>
+          <RequestForm heading="Request Service" subheading="Send us a message and we'll call to confirm within the hour." />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

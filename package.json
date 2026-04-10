@@ -1,0 +1,22 @@
+{
+  "name": "dalelis-mechanical",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.2.1",
+    "@tailwindcss/vite": "4.0.14",
+    "astro": "5.1.10",
+    "tailwindcss": "4.0.14"
+  }
+}

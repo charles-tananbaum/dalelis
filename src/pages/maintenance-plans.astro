@@ -1,0 +1,172 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import TrustBar from "~/components/TrustBar.astro";
+import { SITE } from "~/lib/site";
+
+const plans = [
+  {
+    name: "Basic",
+    tagline: "Heating OR cooling",
+    annual: 229,
+    monthly: 22,
+    popular: false,
+    includes: [
+      "1 annual tune-up",
+      "Complete system inspection & cleaning",
+      "24/7 emergency priority access",
+      "10% off heating or cooling repairs",
+      "No overtime or trip charges",
+      "Satisfaction guarantee",
+    ],
+  },
+  {
+    name: "Advanced",
+    tagline: "Heating AND cooling",
+    annual: 399,
+    monthly: 37,
+    popular: true,
+    includes: [
+      "2 annual tune-ups (fall & spring)",
+      "10% off all heating and cooling repairs",
+      "Everything in Basic plan",
+      "24/7 emergency priority access",
+      "No overtime or trip charges",
+      "Satisfaction guarantee",
+    ],
+  },
+  {
+    name: "Total Home",
+    tagline: "Plumbing + HVAC",
+    annual: 549,
+    monthly: 51,
+    popular: false,
+    includes: [
+      "Everything in Advanced plan",
+      "Annual plumbing inspection",
+      "Water heater flush & inspection",
+      "Fixture and valve check",
+      "10% off all heating, cooling & plumbing repairs",
+      "Priority scheduling",
+    ],
+  },
+];
+
+const benefits = [
+  { icon: "clock", title: "Priority scheduling", body: "Same-day or next-day service when you need it most." },
+  { icon: "zap", title: "Lower energy bills", body: "Tuned systems run at peak efficiency, cutting monthly costs." },
+  { icon: "shield", title: "Warranty protection", body: "Most manufacturer warranties require annual professional service." },
+  { icon: "award", title: "Longer equipment life", body: "Maintained systems last 15–20 years instead of 8–12." },
+];
+---
+
+<BaseLayout
+  title={`Maintenance Plans | Starting at $22/mo | ${SITE.name}`}
+  description="HVAC and plumbing maintenance plans from $22/month. Annual tune-ups, priority scheduling, 10% off repairs, no overtime fees. Protect your home year-round."
+>
+  <section class="py-20 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="max-w-4xl" data-reveal>
+        <span class="eyebrow">Maintenance Plans</span>
+        <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[6rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+          Protect your home
+          <span class="block" style="font-style:italic;">year-round.</span>
+        </h1>
+        <p class="mt-8 text-lg lg:text-xl max-w-2xl" style="color: var(--color-slate);">
+          The cheapest repair is the one you never needed. Our maintenance plans extend equipment life, cut energy bills, and keep you out of emergency calls — starting at just $22/month.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TrustBar />
+
+  {/* Plans */}
+  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="grid md:grid-cols-3 gap-5 lg:gap-6 max-w-6xl mx-auto">
+        {plans.map((plan) => (
+          <div class={`relative rounded-2xl p-8 lg:p-10 flex flex-col ${plan.popular ? 'lg:-translate-y-6' : ''}`}
+               style={plan.popular
+                 ? "background: var(--color-ink); color: var(--color-ivory); box-shadow: var(--shadow-deep);"
+                 : "background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"}
+               data-reveal>
+            {plan.popular && (
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[0.65rem] uppercase tracking-widest"
+                   style="background: var(--color-brass); color: var(--color-ivory); font-weight:600;">
+                Most popular
+              </div>
+            )}
+            <div>
+              <div class="text-xs uppercase tracking-widest mb-2" style={`color: ${plan.popular ? 'var(--color-brass)' : 'var(--color-slate)'};`}>
+                {plan.tagline}
+              </div>
+              <h3 class="font-display text-3xl lg:text-4xl" style="font-weight:500; letter-spacing:-0.02em;">{plan.name}</h3>
+              <div class="mt-6 pb-6 dashed-bottom">
+                <div class="flex items-baseline gap-2">
+                  <span class="font-display text-5xl lg:text-[3.5rem]" style="font-weight:300; letter-spacing:-0.025em;">
+                    ${plan.monthly}
+                  </span>
+                  <span class="text-sm" style={`color: ${plan.popular ? 'color-mix(in oklab, var(--color-ivory) 65%, transparent)' : 'var(--color-slate)'};`}>
+                    /month
+                  </span>
+                </div>
+                <div class="text-sm mt-1" style={`color: ${plan.popular ? 'color-mix(in oklab, var(--color-ivory) 55%, transparent)' : 'var(--color-slate)'};`}>
+                  or ${plan.annual}/year
+                </div>
+              </div>
+            </div>
+
+            <ul class="mt-6 space-y-3 flex-1">
+              {plan.includes.map((item) => (
+                <li class="flex items-start gap-3 text-sm">
+                  <div class="flex-shrink-0 mt-0.5" style={`color: ${plan.popular ? 'var(--color-brass)' : 'var(--color-brass)'};`}>
+                    <Icon name="check" size="1em" strokeWidth={2.5} />
+                  </div>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a href={SITE.phoneTel}
+               class={`btn w-full mt-8 ${plan.popular ? 'btn-accent' : 'btn-primary'}`}>
+              Get started <Icon name="arrow-right" size="1em" />
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-center text-xs mt-10 max-w-2xl mx-auto" style="color: var(--color-slate);">
+        12-month initial commitment. Cancel anytime after with 30 days' notice. No long-term contracts beyond the first year. Repairs and parts are billed separately from plan membership.
+      </p>
+    </div>
+  </section>
+
+  {/* Benefits */}
+  <section class="py-24 lg:py-32" style="background: var(--color-cream);">
+    <div class="container-page">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
+        <div class="lg:col-span-4" data-reveal>
+          <span class="eyebrow">Why a plan</span>
+          <h2 class="mt-4 font-display text-4xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em; line-height:1;">
+            Four reasons homeowners enroll.
+          </h2>
+        </div>
+        <div class="lg:col-span-8 grid sm:grid-cols-2 gap-5 lg:gap-6">
+          {benefits.map((b) => (
+            <div class="p-7 rounded-2xl"
+                 style="background: var(--color-ivory); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+                 data-reveal>
+              <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5"
+                   style="background: var(--color-cream); color: var(--color-brass);">
+                <Icon name={b.icon} size="1.15em" />
+              </div>
+              <h3 class="font-display text-xl lg:text-[1.35rem]" style="font-weight:500;">{b.title}</h3>
+              <p class="mt-2 text-sm" style="color: var(--color-slate);">{b.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

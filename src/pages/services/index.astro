@@ -1,0 +1,127 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import TrustBar from "~/components/TrustBar.astro";
+import RequestForm from "~/components/RequestForm.astro";
+import { getCollection } from "astro:content";
+import { SITE } from "~/lib/site";
+
+const services = (await getCollection("services"))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const categories = {
+  hvac: { label: "HVAC", icon: "gear", description: "Whole-system heating and cooling service." },
+  cooling: { label: "Air Conditioning", icon: "snowflake", description: "Central AC, mini-splits, and heat pumps." },
+  heating: { label: "Heating", icon: "flame", description: "Furnaces, boilers, and heat pump heating." },
+  plumbing: { label: "Plumbing", icon: "droplet", description: "From leaky faucets to whole-home re-pipes." },
+  "water-heaters": { label: "Water Heaters", icon: "pipe", description: "Tank, tankless, and heat pump water heaters." },
+} as const;
+
+const grouped = Object.keys(categories).map((key) => ({
+  ...categories[key as keyof typeof categories],
+  key,
+  services: services.filter((s) => s.data.category === key),
+}));
+---
+
+<BaseLayout
+  title={`All Services | ${SITE.name}`}
+  description="Licensed plumbing, heating, and air conditioning services in Norwood, MA. AC repair, furnace installation, water heaters, emergency service, and more."
+>
+  {/* Hero */}
+  <section class="relative py-20 lg:py-32 overflow-hidden" style="background: var(--color-ivory);">
+    <div class="container-page relative">
+      <div class="max-w-4xl" data-reveal>
+        <span class="eyebrow">Our services</span>
+        <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[6rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+          Everything your home needs,
+          <span class="block" style="font-style:italic;">under one license.</span>
+        </h1>
+        <p class="mt-8 text-lg lg:text-xl max-w-2xl" style="color: var(--color-slate);">
+          Dalelis Mechanical is licensed for both plumbing and HVAC — so one team, one call, and one company is accountable for every pipe and piece of equipment in your home.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TrustBar />
+
+  {/* Services by category */}
+  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      {grouped.map((group, gi) => (
+        group.services.length > 0 && (
+          <div class={`grid lg:grid-cols-12 gap-8 lg:gap-16 ${gi > 0 ? 'mt-24 pt-24 dashed-top' : ''}`}>
+            <div class="lg:col-span-4" data-reveal>
+              <div class="lg:sticky lg:top-28">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center mb-5"
+                     style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+                  <Icon name={group.icon} size="1.3em" />
+                </div>
+                <span class="eyebrow">{String(gi + 1).padStart(2, '0')}</span>
+                <h2 class="mt-3 font-display text-4xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em; line-height:1;">
+                  {group.label}
+                </h2>
+                <p class="mt-4 text-base" style="color: var(--color-slate);">{group.description}</p>
+              </div>
+            </div>
+            <div class="lg:col-span-8 space-y-3">
+              {group.services.map((s) => (
+                <a href={`/services/${s.id.replace(/\.md$/, '')}/`}
+                   class="group block p-6 lg:p-7 rounded-2xl transition-all hover:-translate-y-0.5"
+                   style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+                   data-reveal>
+                  <div class="flex items-start justify-between gap-6">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-3 mb-2">
+                        <h3 class="font-display text-xl lg:text-2xl" style="font-weight:500;">{s.data.title}</h3>
+                        {s.data.emergency && (
+                          <span class="px-2 py-0.5 text-[0.65rem] uppercase tracking-widest rounded-full"
+                                style="background: color-mix(in oklab, var(--color-brick) 10%, transparent); color: var(--color-brick); font-weight:600;">
+                            24/7
+                          </span>
+                        )}
+                      </div>
+                      <p class="text-sm lg:text-[0.95rem]" style="color: var(--color-slate);">{s.data.shortDescription}</p>
+                    </div>
+                    <div class="flex-shrink-0 mt-2 transition-transform group-hover:translate-x-1" style="color: var(--color-brass);">
+                      <Icon name="arrow-right" size="1.2em" />
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      ))}
+    </div>
+  </section>
+
+  {/* CTA / form */}
+  <section class="py-24 lg:py-32" style="background: var(--color-cream);">
+    <div class="container-page grid lg:grid-cols-12 gap-12 lg:gap-20">
+      <div class="lg:col-span-6 lg:sticky lg:top-28 self-start">
+        <span class="eyebrow">Get started</span>
+        <h2 class="mt-4 font-display text-4xl lg:text-[3.5rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">
+          Ready when you are.
+        </h2>
+        <p class="mt-5 text-base lg:text-lg" style="color: var(--color-slate);">
+          Request service online and we'll call to confirm within the hour. For emergencies, always call — we answer the phone 24/7.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={SITE.phoneTel} class="btn btn-primary">
+            <Icon name="phone" size="1em" />
+            {SITE.phone}
+          </a>
+          <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="btn btn-accent">
+            <Icon name="calendar" size="1em" />
+            Book Online
+          </a>
+        </div>
+      </div>
+      <div class="lg:col-span-6">
+        <RequestForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

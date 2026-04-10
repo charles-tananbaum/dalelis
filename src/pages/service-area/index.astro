@@ -1,0 +1,121 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import RequestForm from "~/components/RequestForm.astro";
+import TrustBar from "~/components/TrustBar.astro";
+import { SITE, ALL_SERVICE_AREAS, FEATURED_AREAS } from "~/lib/site";
+import { getCollection } from "astro:content";
+
+const featuredPages = new Set(
+  (await getCollection("serviceAreas")).map((a) => a.data.name)
+);
+---
+
+<BaseLayout
+  title={`Service Area | ${SITE.name}`}
+  description="Dalelis Mechanical serves 40+ Massachusetts towns including Norwood, Canton, Dedham, Medfield, Sharon, Walpole, and Westwood with licensed plumbing and HVAC service."
+>
+  {/* Hero */}
+  <section class="relative py-20 lg:py-32 overflow-hidden" style="background: var(--color-ivory);">
+    <div class="container-page relative">
+      <div class="max-w-4xl" data-reveal>
+        <span class="eyebrow">Where we work</span>
+        <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[6rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+          Serving 40+ towns
+          <span class="block" style="font-style:italic;">across greater Boston.</span>
+        </h1>
+        <p class="mt-8 text-lg lg:text-xl max-w-2xl" style="color: var(--color-slate);">
+          Headquartered in Norwood, dispatched across the south and west suburbs. If you live between Arlington and Foxborough, we probably service your town.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TrustBar />
+
+  {/* Featured towns */}
+  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page">
+      <div class="mb-14" data-reveal>
+        <span class="eyebrow">Featured areas</span>
+        <h2 class="mt-4 font-display text-4xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em;">
+          Our core service towns.
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+        {FEATURED_AREAS.map((area, i) => (
+          <a href={`/service-area/${area.toLowerCase()}/`}
+             class="group relative block p-8 lg:p-10 rounded-2xl transition-all hover:-translate-y-1"
+             style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+             data-reveal>
+            <div class="flex items-start justify-between mb-6">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center"
+                   style="background: var(--color-ivory); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
+                <Icon name="map-pin" size="1.1em" />
+              </div>
+              <span class="font-display text-2xl opacity-15" style="font-weight:300;">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <h3 class="font-display text-3xl lg:text-[2rem]" style="font-weight:500; letter-spacing:-0.02em;">{area}, MA</h3>
+            <div class="mt-6 flex items-center gap-2 text-sm font-medium transition-transform group-hover:translate-x-1" style="color: var(--color-brass);">
+              View services in {area} <Icon name="arrow-right" size="1em" />
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* All areas */}
+  <section class="py-24 lg:py-32" style="background: var(--color-cream);">
+    <div class="container-page">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16">
+        <div class="lg:col-span-4" data-reveal>
+          <span class="eyebrow">Complete list</span>
+          <h2 class="mt-4 font-display text-4xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em; line-height:1;">
+            Every town we serve.
+          </h2>
+          <p class="mt-5 text-base lg:text-lg" style="color: var(--color-slate);">
+            Don't see your town? We regularly take calls outside this list. Just give us a call and we'll let you know.
+          </p>
+          <a href={SITE.phoneTel} class="btn btn-primary mt-6">
+            <Icon name="phone" size="1em" /> {SITE.phone}
+          </a>
+        </div>
+
+        <div class="lg:col-span-8" data-reveal>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-0">
+            {ALL_SERVICE_AREAS.map((town) => {
+              const hasPage = featuredPages.has(town);
+              return hasPage ? (
+                <a href={`/service-area/${town.toLowerCase()}/`}
+                   class="flex items-center justify-between py-3 dashed-bottom text-sm transition-colors hover:text-[var(--color-brass)]"
+                   style="color: var(--color-ink);">
+                  <span class="font-medium">{town}</span>
+                  <Icon name="arrow-right" size="0.85em" />
+                </a>
+              ) : (
+                <div class="py-3 dashed-bottom text-sm" style="color: var(--color-slate);">
+                  {town}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* CTA form */}
+  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+    <div class="container-page max-w-4xl">
+      <div class="text-center mb-10" data-reveal>
+        <span class="eyebrow">Request service</span>
+        <h2 class="mt-4 font-display text-4xl lg:text-5xl" style="font-weight:450; letter-spacing:-0.025em;">
+          Schedule in your town.
+        </h2>
+      </div>
+      <RequestForm />
+    </div>
+  </section>
+</BaseLayout>
