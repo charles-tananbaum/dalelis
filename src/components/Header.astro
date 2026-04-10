@@ -83,45 +83,51 @@ const nav = [
       </div>
     </div>
   </div>
+</header>
 
-  {/* Mobile menu panel */}
-  <div
-    class="lg:hidden hidden fixed inset-0 z-50"
-    data-mobile-menu
-    aria-hidden="true"
-  >
-    <div class="absolute inset-0" style="background: color-mix(in oklab, var(--color-ink) 70%, transparent);" data-menu-backdrop></div>
-    <div class="absolute right-0 top-0 bottom-0 w-[88%] max-w-sm overflow-y-auto"
-         style="background: var(--color-ivory); box-shadow: -20px 0 60px -20px rgba(12,26,46,0.3);">
-      <div class="flex items-center justify-between p-5 dashed-bottom">
-        <span class="font-display text-xl" style="font-weight:500;">Menu</span>
-        <button aria-label="Close menu" class="p-2" data-menu-close>
-          <Icon name="close" size="1.3em" />
-        </button>
-      </div>
-      <nav class="p-5 flex flex-col gap-1" aria-label="Mobile">
-        {nav.map((item) => (
-          <a href={item.href}
-             class="flex items-center justify-between py-4 px-2 dashed-bottom text-[1.05rem]"
-             style="color: var(--color-ink);">
-            <span class="font-display" style="font-weight:500;">{item.label}</span>
-            <Icon name="chevron-right" size="1.1em" />
-          </a>
-        ))}
-      </nav>
-      <div class="p-5 space-y-3">
-        <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="btn btn-accent w-full">
-          <Icon name="calendar" size="1em" />
-          Book Online
+{/*
+  Mobile menu panel — MUST be a sibling of <header>, not a child.
+  Reason: the header uses `backdrop-blur-md` which sets `backdrop-filter`, and
+  per CSS spec that creates a new containing block for any `position: fixed`
+  descendants. If this panel were inside <header> it would be constrained to
+  the 64px-tall header bar instead of filling the viewport.
+*/}
+<div
+  class="lg:hidden hidden fixed inset-0 z-[60]"
+  data-mobile-menu
+  aria-hidden="true"
+>
+  <div class="absolute inset-0" style="background: color-mix(in oklab, var(--color-ink) 70%, transparent);" data-menu-backdrop></div>
+  <div class="absolute right-0 top-0 bottom-0 w-[88%] max-w-sm overflow-y-auto"
+       style="background: var(--color-ivory); box-shadow: -20px 0 60px -20px rgba(12,26,46,0.3);">
+    <div class="flex items-center justify-between p-5 dashed-bottom">
+      <span class="font-display text-xl" style="font-weight:500;">Menu</span>
+      <button aria-label="Close menu" class="p-2" data-menu-close>
+        <Icon name="close" size="1.3em" />
+      </button>
+    </div>
+    <nav class="p-5 flex flex-col gap-1" aria-label="Mobile">
+      {nav.map((item) => (
+        <a href={item.href}
+           class="flex items-center justify-between py-4 px-2 dashed-bottom text-[1.05rem]"
+           style="color: var(--color-ink);">
+          <span class="font-display" style="font-weight:500;">{item.label}</span>
+          <Icon name="chevron-right" size="1.1em" />
         </a>
-        <a href={SITE.phoneTel} class="btn btn-primary w-full">
-          <Icon name="phone" size="1em" />
-          {SITE.phone}
-        </a>
-      </div>
+      ))}
+    </nav>
+    <div class="p-5 space-y-3">
+      <a href={SITE.booking} target="_blank" rel="noopener noreferrer" class="btn btn-accent w-full">
+        <Icon name="calendar" size="1em" />
+        Book Online
+      </a>
+      <a href={SITE.phoneTel} class="btn btn-primary w-full">
+        <Icon name="phone" size="1em" />
+        {SITE.phone}
+      </a>
     </div>
   </div>
-</header>
+</div>
 
 <script>
   const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
