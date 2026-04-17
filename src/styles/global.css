@@ -73,6 +73,105 @@ h1 { font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; }
 }
 
 /* ==========================================================================
+   "Card" theme — dark blue/red palette inspired by the Dalelis business card
+   ========================================================================== */
+
+[data-theme="card"] {
+  --color-ivory: #0F1419;          /* page background → deep charcoal */
+  --color-cream: #161D27;          /* elevated surface → dark slate */
+  --color-sand: #2A3444;           /* borders / dividers → muted blue-grey */
+  --color-ink: #E8ECF1;            /* primary text → near-white */
+  --color-navy: #4A9EE5;           /* brand blue → brighter for dark bg */
+  --color-navy-2: #5AAFE8;         /* navy hover → even brighter */
+  --color-slate: #8B99AD;          /* secondary text → muted silver */
+  --color-brass: #D43B3B;          /* accent → bold red from card checkmarks */
+  --color-brass-2: #E04E4E;        /* accent hover → lighter red */
+  --color-brick: #E85D45;          /* emergency → vivid orange-red */
+  --color-evergreen: #3DA866;      /* trust / success → brighter green */
+}
+
+/* Shadows need different tones in card theme */
+[data-theme="card"] {
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px -8px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.25), 0 20px 48px -16px rgba(0, 0, 0, 0.45);
+  --shadow-deep: 0 4px 8px rgba(0, 0, 0, 0.3), 0 32px 64px -24px rgba(0, 0, 0, 0.55);
+}
+
+/* Logo needs light treatment on dark backgrounds */
+[data-theme="card"] [data-logo-img] {
+  mix-blend-mode: normal !important;
+  background: #F5F2EB;
+  border-radius: 9999px;
+  padding: 3px;
+}
+
+/* Grain overlay needs screen blend on dark backgrounds */
+[data-theme="card"] .grain::after {
+  mix-blend-mode: screen;
+  opacity: 0.12;
+}
+
+/* Footer inverts naturally but needs a border tweak */
+[data-theme="card"] footer {
+  background: #E8ECF1 !important;
+  color: #0F1419 !important;
+}
+[data-theme="card"] footer .eyebrow { color: var(--color-brass) !important; }
+[data-theme="card"] footer h2 { color: #0F1419 !important; }
+[data-theme="card"] footer h2 span {
+  color: color-mix(in oklab, #0F1419 72%, var(--color-brass)) !important;
+}
+[data-theme="card"] footer h3 { color: var(--color-brass) !important; }
+[data-theme="card"] footer a:hover { color: #0F1419 !important; }
+[data-theme="card"] footer address,
+[data-theme="card"] footer ul { color: color-mix(in oklab, #0F1419 68%, transparent) !important; }
+[data-theme="card"] footer .btn-accent {
+  background: var(--color-brass) !important;
+  color: white !important;
+}
+[data-theme="card"] footer .btn-ghost {
+  color: #0F1419 !important;
+  border-color: color-mix(in oklab, #0F1419 28%, transparent) !important;
+}
+[data-theme="card"] footer [data-logo-img] {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Mobile CTA bar in card theme */
+[data-theme="card"] .mobile-cta-bar {
+  background: #161D27;
+  box-shadow: 0 -10px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Forms in card theme */
+[data-theme="card"] .input {
+  background: var(--color-cream);
+  border-color: var(--color-sand);
+  color: var(--color-ink);
+}
+
+/* Card theme transition for smooth switching */
+html {
+  transition: background-color 400ms ease, color 400ms ease;
+}
+body,
+header,
+footer,
+main,
+section,
+.booking-card,
+.mobile-cta-bar,
+.btn,
+.btn-primary,
+.btn-accent,
+.btn-ghost,
+.input,
+nav a {
+  transition: background-color 400ms ease, color 400ms ease, border-color 400ms ease, box-shadow 400ms ease;
+}
+
+/* ==========================================================================
    Utility classes
    ========================================================================== */
 
