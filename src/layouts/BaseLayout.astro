@@ -87,7 +87,7 @@ const schemas = [businessSchema, ...(Array.isArray(schema) ? schema : schema ? [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#FAF7F1" />
+    <meta name="theme-color" content="#1F2A3F" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -121,18 +121,6 @@ const schemas = [businessSchema, ...(Array.isArray(schema) ? schema : schema ? [
     <link rel="icon" type="image/jpeg" href="/images/logo.jpg" />
     <link rel="apple-touch-icon" href="/images/logo.jpg" />
 
-    {/* Theme: prevent flash of wrong theme on load */}
-    <script is:inline>
-      (function() {
-        var t = localStorage.getItem('dalelis-theme');
-        if (t === 'card') {
-          document.documentElement.setAttribute('data-theme', 'card');
-          var m = document.querySelector('meta[name="theme-color"]');
-          if (m) m.setAttribute('content', '#1F2A3F');
-        }
-      })();
-    </script>
-
     {/* JSON-LD */}
     {schemas.map((s) => (
       <script type="application/ld+json" set:html={JSON.stringify(s)} />
@@ -146,41 +134,6 @@ const schemas = [businessSchema, ...(Array.isArray(schema) ? schema : schema ? [
     </main>
     <Footer />
     <MobileCTABar />
-
-    {/* Theme toggle — event delegation for all [data-theme-toggle] buttons */}
-    <script>
-      function syncToggleUI(theme) {
-        document.querySelectorAll("[data-theme-pill]").forEach(function(pill) {
-          pill.style.transform = theme === "card" ? "translateX(36px)" : "translateX(0px)";
-        });
-        document.querySelectorAll('[data-theme-icon="classic"]').forEach(function(icon) {
-          icon.style.color = theme === "card" ? "var(--color-slate)" : "var(--color-ink)";
-        });
-        document.querySelectorAll('[data-theme-icon="card"]').forEach(function(icon) {
-          icon.style.color = theme === "card" ? "var(--color-ink)" : "var(--color-slate)";
-        });
-      }
-
-      // Set initial UI state
-      syncToggleUI(document.documentElement.getAttribute("data-theme") || "classic");
-
-      // Delegate clicks on any toggle button
-      document.addEventListener("click", function(e) {
-        var btn = e.target.closest("[data-theme-toggle]");
-        if (!btn) return;
-
-        var current = document.documentElement.getAttribute("data-theme") || "classic";
-        var next = current === "card" ? "classic" : "card";
-
-        document.documentElement.setAttribute("data-theme", next);
-        localStorage.setItem("dalelis-theme", next);
-
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", next === "card" ? "#0F1419" : "#FAF7F1");
-
-        syncToggleUI(next);
-      });
-    </script>
 
     {/* Reveal-on-scroll observer */}
     <script>

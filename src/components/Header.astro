@@ -1,7 +1,6 @@
 ---
 import { SITE } from "~/lib/site";
 import Icon from "./Icon.astro";
-import ThemeToggle from "./ThemeToggle.astro";
 
 const nav = [
   { label: "Services", href: "/services/" },
@@ -51,7 +50,6 @@ const nav = [
 
       {/* Desktop CTAs */}
       <div class="hidden lg:flex items-center gap-3">
-        <ThemeToggle />
         <a href={SITE.phoneTel}
            class="flex items-center gap-2 text-sm font-medium"
            style="color: var(--color-ink);">
@@ -67,9 +65,8 @@ const nav = [
         </a>
       </div>
 
-      {/* Mobile: theme toggle + phone icon + menu */}
+      {/* Mobile: phone icon + menu */}
       <div class="flex lg:hidden items-center gap-2">
-        <ThemeToggle />
         <a href={SITE.phoneTel}
            aria-label="Call Dalelis Mechanical"
            class="p-2.5 rounded-full"

@@ -5,28 +5,28 @@
    ========================================================================== */
 
 @theme {
-  /* Brand palette — warm, trustworthy, light */
-  --color-ivory: #FAF7F1;          /* page background */
-  --color-cream: #F2EDE2;          /* elevated surface */
-  --color-sand: #E8E0CE;           /* borders / dividers */
-  --color-ink: #0C1A2E;            /* primary text + deep navy */
-  --color-navy: #14304F;           /* deep navy brand */
-  --color-navy-2: #1F3F63;         /* navy hover */
-  --color-slate: #4A5568;          /* secondary text */
-  --color-brass: #B8762B;          /* accent / CTA */
-  --color-brass-2: #96611C;        /* accent hover */
-  --color-brick: #B3442A;          /* emergency red-orange */
-  --color-evergreen: #2F5A3E;      /* trust / success */
+  /* Brand palette — dark navy + bold red, inspired by the Dalelis business card */
+  --color-ivory: #1F2A3F;          /* page background → lifted navy */
+  --color-cream: #2B3850;          /* elevated surface → medium navy */
+  --color-sand: #3F4E6B;           /* borders / dividers → defined blue-grey */
+  --color-ink: #F1F5FB;            /* primary text → bright white */
+  --color-navy: #5DB0EE;           /* brand blue → bright for dark bg */
+  --color-navy-2: #76C0F2;         /* navy hover → brighter */
+  --color-slate: #A4B2C8;          /* secondary text → bright silver */
+  --color-brass: #E84545;          /* accent → bright red from card checkmarks */
+  --color-brass-2: #F45959;        /* accent hover → vivid red */
+  --color-brick: #F26A50;          /* emergency → vivid orange-red */
+  --color-evergreen: #4FBF7A;      /* trust / success → bright green */
 
   /* Fonts */
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-body: "Inter Tight", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Shadows — warm, not harsh */
-  --shadow-soft: 0 1px 2px rgba(12, 26, 46, 0.04), 0 8px 24px -8px rgba(12, 26, 46, 0.08);
-  --shadow-lift: 0 2px 4px rgba(12, 26, 46, 0.06), 0 20px 48px -16px rgba(12, 26, 46, 0.16);
-  --shadow-deep: 0 4px 8px rgba(12, 26, 46, 0.08), 0 32px 64px -24px rgba(12, 26, 46, 0.22);
+  /* Shadows — deeper for dark theme */
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px -8px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.25), 0 20px 48px -16px rgba(0, 0, 0, 0.45);
+  --shadow-deep: 0 4px 8px rgba(0, 0, 0, 0.3), 0 32px 64px -24px rgba(0, 0, 0, 0.55);
 }
 
 /* ==========================================================================
@@ -73,102 +73,63 @@ h1 { font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; }
 }
 
 /* ==========================================================================
-   "Card" theme — dark blue/red palette inspired by the Dalelis business card
+   Logo: needs a light pill behind it on dark backgrounds
    ========================================================================== */
 
-[data-theme="card"] {
-  --color-ivory: #1F2A3F;          /* page background → lifted navy */
-  --color-cream: #2B3850;          /* elevated surface → medium navy */
-  --color-sand: #3F4E6B;           /* borders / dividers → defined blue-grey */
-  --color-ink: #F1F5FB;            /* primary text → bright white */
-  --color-navy: #5DB0EE;            /* brand blue → bright for dark bg */
-  --color-navy-2: #76C0F2;         /* navy hover → brighter */
-  --color-slate: #A4B2C8;          /* secondary text → bright silver */
-  --color-brass: #E84545;          /* accent → bright red from card checkmarks */
-  --color-brass-2: #F45959;        /* accent hover → vivid red */
-  --color-brick: #F26A50;          /* emergency → vivid orange-red */
-  --color-evergreen: #4FBF7A;      /* trust / success → bright green */
-}
-
-/* Shadows need different tones in card theme */
-[data-theme="card"] {
-  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px -8px rgba(0, 0, 0, 0.35);
-  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.25), 0 20px 48px -16px rgba(0, 0, 0, 0.45);
-  --shadow-deep: 0 4px 8px rgba(0, 0, 0, 0.3), 0 32px 64px -24px rgba(0, 0, 0, 0.55);
-}
-
-/* Logo needs light treatment on dark backgrounds */
-[data-theme="card"] [data-logo-img] {
+[data-logo-img] {
   mix-blend-mode: normal !important;
   background: #F5F2EB;
   border-radius: 9999px;
   padding: 3px;
 }
 
-/* Grain overlay needs screen blend on dark backgrounds */
-[data-theme="card"] .grain::after {
+/* Grain overlay uses screen blend on dark backgrounds */
+.grain::after {
   mix-blend-mode: screen;
   opacity: 0.12;
 }
 
-/* Footer inverts naturally but needs a border tweak */
-[data-theme="card"] footer {
+/* ==========================================================================
+   Footer: inverts to light bg / dark text for visual break
+   ========================================================================== */
+
+footer {
   background: #E8ECF1 !important;
   color: #1F2A3F !important;
 }
-[data-theme="card"] footer .eyebrow { color: var(--color-brass) !important; }
-[data-theme="card"] footer h2 { color: #1F2A3F !important; }
-[data-theme="card"] footer h2 span {
+footer .eyebrow { color: var(--color-brass) !important; }
+footer h2 { color: #1F2A3F !important; }
+footer h2 span {
   color: color-mix(in oklab, #1F2A3F 72%, var(--color-brass)) !important;
 }
-[data-theme="card"] footer h3 { color: var(--color-brass) !important; }
-[data-theme="card"] footer a:hover { color: #1F2A3F !important; }
-[data-theme="card"] footer address,
-[data-theme="card"] footer ul { color: color-mix(in oklab, #1F2A3F 68%, transparent) !important; }
-[data-theme="card"] footer .btn-accent {
+footer h3 { color: var(--color-brass) !important; }
+footer a:hover { color: #1F2A3F !important; }
+footer address,
+footer ul { color: color-mix(in oklab, #1F2A3F 68%, transparent) !important; }
+footer .btn-accent {
   background: var(--color-brass) !important;
   color: white !important;
 }
-[data-theme="card"] footer .btn-ghost {
+footer .btn-ghost {
   color: #1F2A3F !important;
   border-color: color-mix(in oklab, #1F2A3F 28%, transparent) !important;
 }
-[data-theme="card"] footer [data-logo-img] {
+footer [data-logo-img] {
   background: transparent !important;
   padding: 0 !important;
 }
 
-/* Mobile CTA bar in card theme */
-[data-theme="card"] .mobile-cta-bar {
+/* Mobile CTA bar */
+.mobile-cta-bar {
   background: #2B3850;
   box-shadow: 0 -10px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* Forms in card theme */
-[data-theme="card"] .input {
+/* Forms */
+.input {
   background: var(--color-cream);
   border-color: var(--color-sand);
   color: var(--color-ink);
-}
-
-/* Card theme transition for smooth switching */
-html {
-  transition: background-color 400ms ease, color 400ms ease;
-}
-body,
-header,
-footer,
-main,
-section,
-.booking-card,
-.mobile-cta-bar,
-.btn,
-.btn-primary,
-.btn-accent,
-.btn-ghost,
-.input,
-nav a {
-  transition: background-color 400ms ease, color 400ms ease, border-color 400ms ease, box-shadow 400ms ease;
 }
 
 /* ==========================================================================
