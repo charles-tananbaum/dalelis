@@ -3,54 +3,7 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import Icon from "~/components/Icon.astro";
 import TrustBar from "~/components/TrustBar.astro";
 import { SITE } from "~/lib/site";
-
-const plans = [
-  {
-    name: "Basic",
-    tagline: "Heating OR cooling",
-    annual: 229,
-    monthly: 22,
-    popular: false,
-    includes: [
-      "1 annual tune-up",
-      "Complete system inspection & cleaning",
-      "24/7 emergency priority access",
-      "10% off heating or cooling repairs",
-      "No overtime or trip charges",
-      "Satisfaction guarantee",
-    ],
-  },
-  {
-    name: "Advanced",
-    tagline: "Heating AND cooling",
-    annual: 399,
-    monthly: 37,
-    popular: true,
-    includes: [
-      "2 annual tune-ups (fall & spring)",
-      "10% off all heating and cooling repairs",
-      "Everything in Basic plan",
-      "24/7 emergency priority access",
-      "No overtime or trip charges",
-      "Satisfaction guarantee",
-    ],
-  },
-  {
-    name: "Total Home",
-    tagline: "Plumbing + HVAC",
-    annual: 549,
-    monthly: 51,
-    popular: false,
-    includes: [
-      "Everything in Advanced plan",
-      "Annual plumbing inspection",
-      "Water heater flush & inspection",
-      "Fixture and valve check",
-      "10% off all heating, cooling & plumbing repairs",
-      "Priority scheduling",
-    ],
-  },
-];
+import { PLANS, ADDITIONAL_UNIT_PRICE } from "~/lib/plans";
 
 const benefits = [
   { icon: "clock", title: "Priority scheduling", body: "Same-day or next-day service when you need it most." },
@@ -61,9 +14,12 @@ const benefits = [
 ---
 
 <BaseLayout
-  title={`Maintenance Plans | Starting at $22/mo | ${SITE.name}`}
-  description="HVAC and plumbing maintenance plans from $22/month. Annual tune-ups, priority scheduling, 10% off repairs, no overtime fees. Protect your home year-round."
+  title={`Maintenance Plans | Starting at $19/mo | ${SITE.name}`}
+  description="HVAC and plumbing maintenance plans starting at $19/month. Annual tune-ups, priority scheduling, 10% off repairs, no overtime fees. Protect your home year-round."
 >
+  {/* ================================================== */}
+  {/* HERO */}
+  {/* ================================================== */}
   <section class="py-20 lg:py-32" style="background: var(--color-ivory);">
     <div class="container-page">
       <div class="max-w-4xl" data-reveal>
@@ -73,7 +29,7 @@ const benefits = [
           <span class="block" style="font-style:italic;">year-round.</span>
         </h1>
         <p class="mt-8 text-lg lg:text-xl max-w-2xl" style="color: var(--color-slate);">
-          The cheapest repair is the one you never needed. Our maintenance plans extend equipment life, cut energy bills, and keep you out of emergency calls — starting at just $22/month.
+          The cheapest repair is the one you never needed. Our maintenance plans extend equipment life, cut energy bills, and keep you out of emergency calls — starting at just $19/month.
         </p>
       </div>
     </div>
@@ -81,38 +37,82 @@ const benefits = [
 
   <TrustBar />
 
-  {/* Plans */}
+  {/* ================================================== */}
+  {/* PLANS */}
+  {/* ================================================== */}
   <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
     <div class="container-page">
+
+      {/* Billing toggle */}
+      <div class="flex flex-col items-center mb-14" data-reveal>
+        <div class="inline-flex items-center p-1.5 rounded-full" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
+          <button
+            data-billing-btn="annual"
+            class="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
+            aria-pressed="true"
+            style="background: var(--color-brass); color: white;"
+          >
+            Annual
+          </button>
+          <button
+            data-billing-btn="monthly"
+            class="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
+            aria-pressed="false"
+            style="color: var(--color-ink);"
+          >
+            Monthly
+          </button>
+        </div>
+        <div class="mt-4 text-xs" style="color: var(--color-slate);">
+          <span data-billing-note="annual">Save ~10% by paying annually</span>
+          <span data-billing-note="monthly" class="hidden">10% premium for monthly billing</span>
+        </div>
+      </div>
+
+      {/* Plan cards */}
       <div class="grid md:grid-cols-3 gap-5 lg:gap-6 max-w-6xl mx-auto">
-        {plans.map((plan) => (
-          <div class={`relative rounded-2xl p-8 lg:p-10 flex flex-col ${plan.popular ? 'lg:-translate-y-6' : ''}`}
-               style={plan.popular
-                 ? "background: var(--color-ink); color: var(--color-ivory); box-shadow: var(--shadow-deep);"
-                 : "background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"}
-               data-reveal>
+        {PLANS.map((plan, idx) => (
+          <div
+            class={`plan-card relative rounded-2xl p-8 lg:p-10 flex flex-col transition-all duration-500 ${plan.popular ? 'lg:-translate-y-6 lg:hover:-translate-y-8' : 'hover:-translate-y-2'}`}
+            style={plan.popular
+              ? "background: var(--color-cream); color: var(--color-ink); box-shadow: var(--shadow-deep); border: 2px solid var(--color-brass);"
+              : "background: var(--color-cream); border: 1px solid var(--color-sand);"}
+            data-reveal
+            data-plan-card={plan.slug}
+            style-stagger={idx * 100}
+          >
             {plan.popular && (
               <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[0.65rem] uppercase tracking-widest"
-                   style="background: var(--color-brass); color: var(--color-ivory); font-weight:600;">
+                   style="background: var(--color-brass); color: white; font-weight:600;">
                 Most popular
               </div>
             )}
+
             <div>
-              <div class="text-xs uppercase tracking-widest mb-2" style={`color: ${plan.popular ? 'var(--color-brass)' : 'var(--color-slate)'};`}>
+              <div class="text-xs uppercase tracking-widest mb-2" style="color: var(--color-brass);">
                 {plan.tagline}
               </div>
               <h3 class="font-display text-3xl lg:text-4xl" style="font-weight:500; letter-spacing:-0.02em;">{plan.name}</h3>
-              <div class="mt-6 pb-6 dashed-bottom">
+              <div class="text-sm mt-2" style="color: var(--color-slate);">
+                {plan.visits}
+              </div>
+
+              <div class="mt-6 pb-6 border-b" style="border-color: var(--color-sand);">
                 <div class="flex items-baseline gap-2">
-                  <span class="font-display text-5xl lg:text-[3.5rem]" style="font-weight:300; letter-spacing:-0.025em;">
-                    ${plan.monthly}
+                  <span class="font-display text-5xl lg:text-[3.5rem] price-display"
+                        data-price-annual={`$${plan.annual}`}
+                        data-price-monthly={`$${plan.monthly}`}
+                        style="font-weight:300; letter-spacing:-0.025em;">
+                    ${plan.annual}
                   </span>
-                  <span class="text-sm" style={`color: ${plan.popular ? 'color-mix(in oklab, var(--color-ivory) 65%, transparent)' : 'var(--color-slate)'};`}>
-                    /month
+                  <span class="text-sm price-period" style="color: var(--color-slate);">
+                    /year
                   </span>
                 </div>
-                <div class="text-sm mt-1" style={`color: ${plan.popular ? 'color-mix(in oklab, var(--color-ivory) 55%, transparent)' : 'var(--color-slate)'};`}>
-                  or ${plan.annual}/year
+                <div class="text-sm mt-1 price-alt" style="color: var(--color-slate);"
+                     data-alt-annual={`or $${plan.monthly}/month`}
+                     data-alt-monthly={`or $${plan.annual}/year`}>
+                  or ${plan.monthly}/month
                 </div>
               </div>
             </div>
@@ -120,7 +120,7 @@ const benefits = [
             <ul class="mt-6 space-y-3 flex-1">
               {plan.includes.map((item) => (
                 <li class="flex items-start gap-3 text-sm">
-                  <div class="flex-shrink-0 mt-0.5" style={`color: ${plan.popular ? 'var(--color-brass)' : 'var(--color-brass)'};`}>
+                  <div class="flex-shrink-0 mt-0.5" style="color: var(--color-brass);">
                     <Icon name="check" size="1em" strokeWidth={2.5} />
                   </div>
                   <span>{item}</span>
@@ -128,21 +128,41 @@ const benefits = [
               ))}
             </ul>
 
-            <a href={SITE.phoneTel}
-               class={`btn w-full mt-8 ${plan.popular ? 'btn-accent' : 'btn-primary'}`}>
-              Get started <Icon name="arrow-right" size="1em" />
+            <a
+              href={`/maintenance-plans/sign-up/${plan.slug}/`}
+              class={`btn w-full mt-8 ${plan.popular ? 'btn-accent' : 'btn-primary'}`}
+              data-plan-cta={plan.slug}
+            >
+              Choose plan <Icon name="arrow-right" size="1em" />
             </a>
           </div>
         ))}
       </div>
 
-      <p class="text-center text-xs mt-10 max-w-2xl mx-auto" style="color: var(--color-slate);">
-        12-month initial commitment. Cancel anytime after with 30 days' notice. No long-term contracts beyond the first year. Repairs and parts are billed separately from plan membership.
+      {/* Additional units note */}
+      <div class="mt-12 max-w-3xl mx-auto p-6 rounded-2xl" style="background: var(--color-cream); border: 1px dashed var(--color-sand);" data-reveal>
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--color-ivory); color: var(--color-brass);">
+            <Icon name="info" size="1.1em" />
+          </div>
+          <div>
+            <div class="font-display text-base lg:text-lg mb-1" style="font-weight:500;">Have more than one unit?</div>
+            <div class="text-sm" style="color: var(--color-slate);">
+              Plans cover one unit per service category. Mention any additional furnaces, AC units, or fixtures at your first appointment — additional coverage is just <strong style="color: var(--color-ink);">${ADDITIONAL_UNIT_PRICE} per unit</strong>, billed separately.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-center text-xs mt-8 max-w-2xl mx-auto" style="color: var(--color-slate);">
+        12-month initial commitment. Cancel anytime after with 30 days' notice. Repairs and parts billed separately from plan membership.
       </p>
     </div>
   </section>
 
-  {/* Benefits */}
+  {/* ================================================== */}
+  {/* BENEFITS */}
+  {/* ================================================== */}
   <section class="py-24 lg:py-32" style="background: var(--color-cream);">
     <div class="container-page">
       <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
@@ -155,7 +175,7 @@ const benefits = [
         <div class="lg:col-span-8 grid sm:grid-cols-2 gap-5 lg:gap-6">
           {benefits.map((b) => (
             <div class="p-7 rounded-2xl"
-                 style="background: var(--color-ivory); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);"
+                 style="background: var(--color-ivory); border: 1px solid var(--color-sand);"
                  data-reveal>
               <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5"
                    style="background: var(--color-cream); color: var(--color-brass);">
@@ -169,4 +189,81 @@ const benefits = [
       </div>
     </div>
   </section>
+
+  {/* ================================================== */}
+  {/* CLIENT-SIDE BILLING TOGGLE SCRIPT */}
+  {/* ================================================== */}
+  <script>
+    (function() {
+      const annualBtn = document.querySelector('[data-billing-btn="annual"]');
+      const monthlyBtn = document.querySelector('[data-billing-btn="monthly"]');
+      const priceDisplays = document.querySelectorAll('.price-display');
+      const pricePeriods = document.querySelectorAll('.price-period');
+      const priceAlts = document.querySelectorAll('.price-alt');
+      const annualNote = document.querySelector('[data-billing-note="annual"]');
+      const monthlyNote = document.querySelector('[data-billing-note="monthly"]');
+      const ctas = document.querySelectorAll('[data-plan-cta]');
+
+      let billing = 'annual';
+
+      function setBilling(next) {
+        billing = next;
+
+        // Toggle button styles
+        if (next === 'annual') {
+          annualBtn.style.background = 'var(--color-brass)';
+          annualBtn.style.color = 'white';
+          monthlyBtn.style.background = 'transparent';
+          monthlyBtn.style.color = 'var(--color-ink)';
+          annualBtn.setAttribute('aria-pressed', 'true');
+          monthlyBtn.setAttribute('aria-pressed', 'false');
+          annualNote.classList.remove('hidden');
+          monthlyNote.classList.add('hidden');
+        } else {
+          monthlyBtn.style.background = 'var(--color-brass)';
+          monthlyBtn.style.color = 'white';
+          annualBtn.style.background = 'transparent';
+          annualBtn.style.color = 'var(--color-ink)';
+          monthlyBtn.setAttribute('aria-pressed', 'true');
+          annualBtn.setAttribute('aria-pressed', 'false');
+          monthlyNote.classList.remove('hidden');
+          annualNote.classList.add('hidden');
+        }
+
+        // Animate prices
+        priceDisplays.forEach((el) => {
+          const next = el.getAttribute('data-price-' + billing);
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(-6px)';
+          setTimeout(() => {
+            el.textContent = next;
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          }, 180);
+        });
+
+        pricePeriods.forEach((el) => {
+          el.textContent = billing === 'annual' ? '/year' : '/month';
+        });
+
+        priceAlts.forEach((el) => {
+          el.textContent = el.getAttribute('data-alt-' + billing);
+        });
+
+        // Update CTA URLs to include billing param
+        ctas.forEach((el) => {
+          const slug = el.getAttribute('data-plan-cta');
+          el.setAttribute('href', `/maintenance-plans/sign-up/${slug}/?billing=${billing}`);
+        });
+      }
+
+      // Init
+      priceDisplays.forEach((el) => {
+        el.style.transition = 'opacity 200ms ease, transform 200ms ease';
+      });
+
+      annualBtn.addEventListener('click', () => setBilling('annual'));
+      monthlyBtn.addEventListener('click', () => setBilling('monthly'));
+    })();
+  </script>
 </BaseLayout>

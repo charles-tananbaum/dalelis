@@ -1,0 +1,141 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import { SITE } from "~/lib/site";
+import { getPlanBySlug } from "~/lib/plans";
+
+// Read URL params at request time (not build time)
+export const prerender = false;
+
+const url = Astro.url;
+const sessionId = url.searchParams.get("session_id") || "";
+const planSlug = url.searchParams.get("plan") || "";
+const billing = url.searchParams.get("billing") || "annual";
+const amount = url.searchParams.get("amount") || "";
+const name = url.searchParams.get("name") || "";
+const email = url.searchParams.get("email") || "";
+
+const plan = getPlanBySlug(planSlug);
+const isPaid = sessionId.startsWith("cs_") && plan;
+
+// In production, we'd verify with Stripe here:
+//   const session = await stripe.checkout.sessions.retrieve(sessionId);
+//   if (session.payment_status === 'paid') { /* update HCP */ }
+// For mock, we trust the URL param presence.
+---
+
+<BaseLayout
+  title="You're enrolled · Welcome aboard"
+  description="Welcome to your Dalelis maintenance plan."
+  noindex={true}
+>
+  <section class="py-16 lg:py-24" style="background: var(--color-ivory); min-height: calc(100vh - 80px);">
+    <div class="container-page">
+      <div class="max-w-2xl mx-auto text-center">
+
+        {/* Success icon with animation */}
+        <div class="success-checkmark inline-flex items-center justify-center w-20 h-20 rounded-full mb-8" style="background: color-mix(in oklab, var(--color-evergreen) 18%, transparent); color: var(--color-evergreen);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12" class="check-path" />
+          </svg>
+        </div>
+
+        <span class="eyebrow" style="color: var(--color-evergreen);">Payment confirmed</span>
+        <h1 class="mt-5 font-display text-5xl md:text-6xl lg:text-[5rem]" style="font-weight:400; letter-spacing:-0.035em; line-height:0.95;">
+          You're in,
+          <span class="block" style="font-style:italic;">{name ? name.split(" ")[0] : "welcome aboard"}.</span>
+        </h1>
+
+        <p class="mt-8 text-lg lg:text-xl" style="color: var(--color-slate);">
+          We've received your enrollment for the <strong style="color: var(--color-ink);">{plan ? plan.name : "maintenance"}</strong> plan. James will be in touch within <strong style="color: var(--color-ink);">one business day</strong> to schedule your first visit.
+        </p>
+
+        {/* Receipt card */}
+        <div class="mt-12 rounded-2xl p-7 lg:p-8 text-left" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
+          <div class="flex items-center justify-between mb-5">
+            <span class="text-xs uppercase tracking-widest" style="color: var(--color-brass);">Confirmation</span>
+            <span class="font-mono text-xs" style="color: var(--color-slate);">{sessionId.slice(0, 16)}…</span>
+          </div>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between py-2 border-b" style="border-color: var(--color-sand);">
+              <span style="color: var(--color-slate);">Plan</span>
+              <span style="font-weight:500;">{plan ? plan.name : planSlug}</span>
+            </div>
+            <div class="flex justify-between py-2 border-b" style="border-color: var(--color-sand);">
+              <span style="color: var(--color-slate);">Billing</span>
+              <span style="font-weight:500;">{billing === "annual" ? "Annual" : "Monthly"}</span>
+            </div>
+            <div class="flex justify-between py-2 border-b" style="border-color: var(--color-sand);">
+              <span style="color: var(--color-slate);">Amount charged</span>
+              <span style="font-weight:500;">${amount}</span>
+            </div>
+            <div class="flex justify-between py-2 border-b" style="border-color: var(--color-sand);">
+              <span style="color: var(--color-slate);">Receipt sent to</span>
+              <span style="font-weight:500;">{email}</span>
+            </div>
+            <div class="flex justify-between py-2">
+              <span style="color: var(--color-slate);">Next step</span>
+              <span style="font-weight:500; color: var(--color-evergreen);">James calls to schedule</span>
+            </div>
+          </div>
+        </div>
+
+        {/* What happens next */}
+        <div class="mt-12 grid sm:grid-cols-3 gap-4 text-left">
+          <div class="p-5 rounded-xl" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center mb-3" style="background: var(--color-ivory); color: var(--color-brass);">
+              <span class="font-display text-sm" style="font-weight:500;">1</span>
+            </div>
+            <div class="font-display text-base mb-1" style="font-weight:500;">We confirm</div>
+            <div class="text-xs" style="color: var(--color-slate);">Receipt + welcome email is on its way to your inbox.</div>
+          </div>
+          <div class="p-5 rounded-xl" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center mb-3" style="background: var(--color-ivory); color: var(--color-brass);">
+              <span class="font-display text-sm" style="font-weight:500;">2</span>
+            </div>
+            <div class="font-display text-base mb-1" style="font-weight:500;">James calls</div>
+            <div class="text-xs" style="color: var(--color-slate);">Within one business day to schedule your first visit.</div>
+          </div>
+          <div class="p-5 rounded-xl" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center mb-3" style="background: var(--color-ivory); color: var(--color-brass);">
+              <span class="font-display text-sm" style="font-weight:500;">3</span>
+            </div>
+            <div class="font-display text-base mb-1" style="font-weight:500;">We arrive</div>
+            <div class="text-xs" style="color: var(--color-slate);">Full system inspection, tune-up, and any add-on units noted.</div>
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/" class="btn btn-primary">
+            Back to home
+          </a>
+          <a href={SITE.phoneTel} class="btn btn-ghost">
+            <Icon name="phone" size="1em" />
+            Call us · {SITE.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    @keyframes success-pop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes draw-check {
+      from { stroke-dashoffset: 30; }
+      to { stroke-dashoffset: 0; }
+    }
+    .success-checkmark {
+      animation: success-pop 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .check-path {
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: draw-check 500ms ease-out 300ms forwards;
+    }
+  </style>
+</BaseLayout>

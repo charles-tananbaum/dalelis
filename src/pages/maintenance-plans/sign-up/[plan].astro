@@ -1,0 +1,288 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Icon from "~/components/Icon.astro";
+import { SITE } from "~/lib/site";
+import { PLANS, getPlanBySlug, ADDITIONAL_UNIT_PRICE } from "~/lib/plans";
+
+// Static paths for each plan slug
+export function getStaticPaths() {
+  return PLANS.map((p) => ({ params: { plan: p.slug } }));
+}
+
+const { plan: planSlug } = Astro.params;
+const plan = getPlanBySlug(planSlug!);
+
+if (!plan) {
+  return Astro.redirect("/maintenance-plans/");
+}
+---
+
+<BaseLayout
+  title={`Enroll: ${plan.name} Plan | ${SITE.name}`}
+  description={`Enroll in the ${plan.name} maintenance plan from Dalelis Mechanical. Annual coverage starting at $${plan.monthly}/month.`}
+  noindex={true}
+>
+  <section class="py-16 lg:py-24" style="background: var(--color-ivory); min-height: calc(100vh - 80px);">
+    <div class="container-page">
+      <div class="max-w-3xl mx-auto">
+
+        {/* Breadcrumb */}
+        <nav class="mb-8 text-sm" style="color: var(--color-slate);" aria-label="Breadcrumb">
+          <a href="/maintenance-plans/" class="hover:underline">Maintenance Plans</a>
+          <span class="mx-2">/</span>
+          <span style="color: var(--color-ink);">Enroll · {plan.name}</span>
+        </nav>
+
+        {/* Header */}
+        <div data-reveal>
+          <span class="eyebrow">Step 1 of 2</span>
+          <h1 class="mt-4 font-display text-4xl md:text-5xl lg:text-[3.5rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1.05;">
+            Tell us about your home,
+            <span class="block" style="font-style:italic;">we'll handle the rest.</span>
+          </h1>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 mt-12">
+
+          {/* ================================================== */}
+          {/* FORM */}
+          {/* ================================================== */}
+          <div class="lg:col-span-7" data-reveal>
+            <form id="plan-signup-form" class="space-y-5" novalidate>
+              <input type="hidden" name="plan" value={plan.slug} />
+              <input type="hidden" name="billing" id="billing-input" value="annual" />
+
+              <div>
+                <label class="label" for="name">Full name</label>
+                <input class="input" type="text" id="name" name="name" autocomplete="name" required />
+              </div>
+
+              <div>
+                <label class="label" for="email">Email</label>
+                <input class="input" type="email" id="email" name="email" autocomplete="email" required />
+              </div>
+
+              <div>
+                <label class="label" for="phone">Phone</label>
+                <input class="input" type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required />
+              </div>
+
+              <div>
+                <label class="label" for="street">Street address</label>
+                <input class="input" type="text" id="street" name="street" autocomplete="street-address" required />
+              </div>
+
+              <div>
+                <label class="label" for="unit">Apt / Unit (optional)</label>
+                <input class="input" type="text" id="unit" name="unit" autocomplete="address-line2" />
+              </div>
+
+              <div class="grid grid-cols-3 gap-3">
+                <div class="col-span-2">
+                  <label class="label" for="city">City</label>
+                  <input class="input" type="text" id="city" name="city" autocomplete="address-level2" required />
+                </div>
+                <div>
+                  <label class="label" for="state">State</label>
+                  <input class="input" type="text" id="state" name="state" autocomplete="address-level1" maxlength="2" value="MA" required style="text-transform: uppercase;" />
+                </div>
+              </div>
+
+              <div>
+                <label class="label" for="zip">ZIP code</label>
+                <input class="input" type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric" maxlength="10" required />
+              </div>
+
+              <div>
+                <label class="label" for="notes">Notes for our team (optional)</label>
+                <textarea class="input" id="notes" name="notes" rows="3" placeholder="Equipment age, any known issues, preferred visit windows..."></textarea>
+              </div>
+
+              <div class="pt-2 p-4 rounded-xl" style="background: color-mix(in oklab, var(--color-brass) 8%, transparent); border: 1px dashed color-mix(in oklab, var(--color-brass) 40%, transparent);">
+                <div class="flex items-start gap-3 text-sm">
+                  <div class="flex-shrink-0 mt-0.5" style="color: var(--color-brass);">
+                    <Icon name="info" size="1em" />
+                  </div>
+                  <div style="color: var(--color-ink);">
+                    Have <strong>more than one</strong> furnace, AC, or fixture? Just mention it at your first appointment — additional units are <strong>${ADDITIONAL_UNIT_PRICE} each</strong>, billed separately.
+                  </div>
+                </div>
+              </div>
+
+              {/* Error banner */}
+              <div id="form-error" class="hidden p-4 rounded-xl text-sm" style="background: color-mix(in oklab, var(--color-brick) 12%, transparent); color: var(--color-brick); border: 1px solid color-mix(in oklab, var(--color-brick) 30%, transparent);"></div>
+
+              {/* Submit */}
+              <div class="pt-4">
+                <button type="submit" id="submit-btn" class="btn btn-accent w-full text-base">
+                  <span id="submit-label">Continue to payment</span>
+                  <span id="submit-loading" class="hidden inline-flex items-center gap-2">
+                    <span class="w-4 h-4 inline-block rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                    Setting up checkout...
+                  </span>
+                  <Icon name="arrow-right" size="1em" />
+                </button>
+                <p class="mt-3 text-xs text-center" style="color: var(--color-slate);">
+                  Secure payment via Stripe · Cancel anytime after 12 months
+                </p>
+              </div>
+            </form>
+          </div>
+
+          {/* ================================================== */}
+          {/* PLAN SUMMARY (sticky sidebar) */}
+          {/* ================================================== */}
+          <aside class="lg:col-span-5">
+            <div class="lg:sticky lg:top-24 rounded-2xl p-7 lg:p-8" style="background: var(--color-cream); border: 1px solid var(--color-sand);" data-reveal>
+              <div class="text-xs uppercase tracking-widest mb-2" style="color: var(--color-brass);">
+                {plan.tagline}
+              </div>
+              <h2 class="font-display text-3xl mb-2" style="font-weight:500; letter-spacing:-0.02em;">
+                {plan.name}
+              </h2>
+              <div class="text-sm mb-6" style="color: var(--color-slate);">
+                {plan.visits}
+              </div>
+
+              {/* Billing frequency picker */}
+              <div class="space-y-2 mb-6">
+                <label class="block p-4 rounded-xl cursor-pointer transition-all" style="background: var(--color-ivory); border: 2px solid var(--color-brass);" data-billing-option="annual">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <input type="radio" name="billing-toggle" value="annual" checked class="w-4 h-4 accent-current" style="accent-color: var(--color-brass);" />
+                      <div>
+                        <div class="font-medium text-sm">Annual</div>
+                        <div class="text-xs" style="color: var(--color-slate);">Best value · Save ~10%</div>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <div class="font-display text-xl" style="font-weight:500;">${plan.annual}</div>
+                      <div class="text-xs" style="color: var(--color-slate);">/year</div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="block p-4 rounded-xl cursor-pointer transition-all" style="background: var(--color-ivory); border: 2px solid var(--color-sand);" data-billing-option="monthly">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <input type="radio" name="billing-toggle" value="monthly" class="w-4 h-4" style="accent-color: var(--color-brass);" />
+                      <div>
+                        <div class="font-medium text-sm">Monthly</div>
+                        <div class="text-xs" style="color: var(--color-slate);">${plan.monthly * 12}/year equivalent</div>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <div class="font-display text-xl" style="font-weight:500;">${plan.monthly}</div>
+                      <div class="text-xs" style="color: var(--color-slate);">/month</div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              {/* What's included */}
+              <div class="pt-6 border-t" style="border-color: var(--color-sand);">
+                <div class="text-xs uppercase tracking-widest mb-3" style="color: var(--color-slate);">What's included</div>
+                <ul class="space-y-2">
+                  {plan.includes.map((item) => (
+                    <li class="flex items-start gap-2 text-sm">
+                      <div class="flex-shrink-0 mt-0.5" style="color: var(--color-brass);">
+                        <Icon name="check" size="0.9em" strokeWidth={2.5} />
+                      </div>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Total */}
+              <div class="mt-6 pt-6 border-t flex items-baseline justify-between" style="border-color: var(--color-sand);">
+                <span class="text-sm uppercase tracking-widest" style="color: var(--color-slate);">Total today</span>
+                <span class="font-display text-3xl" style="font-weight:500;">
+                  $<span id="total-display">{plan.annual}</span>
+                </span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ planData: { slug: plan.slug, annual: plan.annual, monthly: plan.monthly } }}>
+    (function() {
+      const form = document.getElementById('plan-signup-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const submitLabel = document.getElementById('submit-label');
+      const submitLoading = document.getElementById('submit-loading');
+      const errorBanner = document.getElementById('form-error');
+      const billingInput = document.getElementById('billing-input');
+      const totalDisplay = document.getElementById('total-display');
+      const billingRadios = document.querySelectorAll('input[name="billing-toggle"]');
+      const billingOptions = document.querySelectorAll('[data-billing-option]');
+
+      // Pre-select billing from URL param
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialBilling = urlParams.get('billing') === 'monthly' ? 'monthly' : 'annual';
+      const initialRadio = document.querySelector(`input[name="billing-toggle"][value="${initialBilling}"]`);
+      if (initialRadio) initialRadio.checked = true;
+      updateBillingUI(initialBilling);
+
+      function updateBillingUI(billing) {
+        billingInput.value = billing;
+        totalDisplay.textContent = billing === 'annual' ? planData.annual : planData.monthly;
+
+        billingOptions.forEach((opt) => {
+          const isActive = opt.getAttribute('data-billing-option') === billing;
+          opt.style.borderColor = isActive ? 'var(--color-brass)' : 'var(--color-sand)';
+        });
+
+        if (billing === 'monthly') {
+          submitLabel.textContent = `Continue to payment · $${planData.monthly}/mo`;
+        } else {
+          submitLabel.textContent = `Continue to payment · $${planData.annual}/yr`;
+        }
+      }
+
+      billingRadios.forEach((radio) => {
+        radio.addEventListener('change', (e) => {
+          updateBillingUI(e.target.value);
+        });
+      });
+
+      // Form submit
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBanner.classList.add('hidden');
+        submitBtn.disabled = true;
+        submitLabel.classList.add('hidden');
+        submitLoading.classList.remove('hidden');
+
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
+
+        try {
+          const res = await fetch('/api/plan-signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.success && data.checkoutUrl) {
+            // Redirect to Stripe (or mock checkout in dev)
+            window.location.href = data.checkoutUrl;
+          } else {
+            throw new Error(data.error || 'Something went wrong. Please try again or call us.');
+          }
+        } catch (err) {
+          errorBanner.textContent = err.message || 'Network error. Please check your connection.';
+          errorBanner.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitLabel.classList.remove('hidden');
+          submitLoading.classList.add('hidden');
+        }
+      });
+    })();
+  </script>
+</BaseLayout>
