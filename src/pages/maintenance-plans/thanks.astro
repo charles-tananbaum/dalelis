@@ -4,7 +4,6 @@ import Icon from "~/components/Icon.astro";
 import { SITE } from "~/lib/site";
 import { stripe } from "~/lib/stripe";
 
-// Read URL params at request time (not build time)
 export const prerender = false;
 
 const sessionId = Astro.url.searchParams.get("session_id") ?? "";
@@ -23,7 +22,6 @@ let customerEmail = "";
 
 try {
   const session = await stripe.checkout.sessions.retrieve(sessionId);
-
   const isPaid =
     session.payment_status === "paid" || session.status === "complete";
 
@@ -52,29 +50,31 @@ try {
     <div class="container-page">
       <div class="max-w-2xl mx-auto text-center">
 
-        {verifyError ? (
-          {/* ── Payment not confirmed ── */}
-          <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
-               style="background: color-mix(in oklab, var(--color-brick) 18%, transparent); color: var(--color-brick);">
-            <Icon name="alert-circle" size="2.5rem" />
+        {verifyError && (
+          <div>
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
+                 style="background: color-mix(in oklab, var(--color-brick) 18%, transparent); color: var(--color-brick);">
+              <Icon name="alert-circle" size="2.5rem" />
+            </div>
+            <h1 class="mt-4 font-display text-4xl md:text-5xl" style="font-weight:400; letter-spacing:-0.03em;">
+              Payment not confirmed.
+            </h1>
+            <p class="mt-6 text-lg" style="color: var(--color-slate);">
+              We couldn't verify your payment. If you were charged, please call us immediately
+              and we'll sort it out right away.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="/maintenance-plans/" class="btn btn-primary">Back to plans</a>
+              <a href={SITE.phoneTel} class="btn btn-ghost">
+                <Icon name="phone" size="1em" />
+                Call us · {SITE.phone}
+              </a>
+            </div>
           </div>
-          <h1 class="mt-4 font-display text-4xl md:text-5xl" style="font-weight:400; letter-spacing:-0.03em;">
-            Payment not confirmed.
-          </h1>
-          <p class="mt-6 text-lg" style="color: var(--color-slate);">
-            We couldn't verify your payment. If you were charged, please call us immediately
-            and we'll sort it out right away.
-          </p>
-          <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="/maintenance-plans/" class="btn btn-primary">Back to plans</a>
-            <a href={SITE.phoneTel} class="btn btn-ghost">
-              <Icon name="phone" size="1em" />
-              Call us · {SITE.phone}
-            </a>
-          </div>
-        ) : (
-          {/* ── Success ── */}
-          <>
+        )}
+
+        {!verifyError && (
+          <div>
             <div class="success-checkmark inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
                  style="background: color-mix(in oklab, var(--color-evergreen) 18%, transparent); color: var(--color-evergreen);">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -95,13 +95,11 @@ try {
               James will be in touch within <strong style="color: var(--color-ink);">one business day</strong> to schedule your first visit.
             </p>
 
-            {/* Receipt card */}
             <div class="mt-12 rounded-2xl p-7 lg:p-8 text-left" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
               <div class="flex items-center justify-between mb-5">
                 <span class="text-xs uppercase tracking-widest" style="color: var(--color-brass);">Confirmation</span>
                 <span class="font-mono text-xs" style="color: var(--color-slate);">{sessionId.slice(0, 16)}…</span>
               </div>
-
               <div class="space-y-3 text-sm">
                 <div class="flex justify-between py-2 border-b" style="border-color: var(--color-sand);">
                   <span style="color: var(--color-slate);">Plan</span>
@@ -126,7 +124,6 @@ try {
               </div>
             </div>
 
-            {/* What happens next */}
             <div class="mt-12 grid sm:grid-cols-3 gap-4 text-left">
               <div class="p-5 rounded-xl" style="background: var(--color-cream); border: 1px solid var(--color-sand);">
                 <div class="w-9 h-9 rounded-full flex items-center justify-center mb-3" style="background: var(--color-ivory); color: var(--color-brass);">
@@ -158,7 +155,7 @@ try {
                 Call us · {SITE.phone}
               </a>
             </div>
-          </>
+          </div>
         )}
 
       </div>
