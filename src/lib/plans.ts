@@ -61,8 +61,8 @@ export const PLANS: Plan[] = [
       monthly: "/maintenance-plans/checkout-mock?plan=heating&billing=monthly&amount=19",
     },
     stripePriceIds: {
-      annual: "price_REPLACE_HEATING_ANNUAL",
-      monthly: "price_REPLACE_HEATING_MONTHLY",
+      annual: "price_1TRzzGC79j4Jzw3undpYow8L",
+      monthly: "price_1TRzyHC79j4Jzw3uVmWzQOiI",
     },
   },
   {
@@ -88,8 +88,8 @@ export const PLANS: Plan[] = [
       monthly: "/maintenance-plans/checkout-mock?plan=heating-cooling&billing=monthly&amount=37",
     },
     stripePriceIds: {
-      annual: "price_REPLACE_HEATING_COOLING_ANNUAL",
-      monthly: "price_REPLACE_HEATING_COOLING_MONTHLY",
+      annual: "price_1TRzzjC79j4Jzw3uJ74AEE1s",
+      monthly: "price_1TS008C79j4Jzw3ui8mnBDTq",
     },
   },
   {
@@ -115,8 +115,8 @@ export const PLANS: Plan[] = [
       monthly: "/maintenance-plans/checkout-mock?plan=whole-home&billing=monthly&amount=51",
     },
     stripePriceIds: {
-      annual: "price_REPLACE_WHOLE_HOME_ANNUAL",
-      monthly: "price_REPLACE_WHOLE_HOME_MONTHLY",
+      annual: "price_1TS00YC79j4Jzw3uQ9qTtCva",
+      monthly: "price_1TS00uC79j4Jzw3uTUaLLa0c",
     },
   },
 ];
