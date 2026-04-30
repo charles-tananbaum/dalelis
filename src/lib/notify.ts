@@ -84,6 +84,12 @@ export async function notifyCancellation(customer: CancellationCustomer): Promis
 }
 
 async function sendEmail(subject: string, html: string): Promise<void> {
+  // Email is optional — Stripe handles payment confirmation to the account holder.
+  // Skip silently if RESEND_API_KEY is not configured.
+  if (!import.meta.env.RESEND_API_KEY) {
+    console.log('[notify] RESEND_API_KEY not set, skipping email:', subject);
+    return;
+  }
   try {
     const resend = getResend();
     const { error } = await resend.emails.send({
