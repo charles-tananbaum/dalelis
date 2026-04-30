@@ -115,12 +115,14 @@ if (!plan) {
               {/* Submit */}
               <div class="pt-4">
                 <button type="submit" id="submit-btn" class="btn btn-accent w-full text-base">
-                  <span id="submit-label">Continue to payment</span>
-                  <span id="submit-loading" class="hidden inline-flex items-center gap-2">
+                  <span id="submit-label" class="inline-flex items-center gap-2">
+                    <span id="submit-text">Continue to payment</span>
+                    <Icon name="arrow-right" size="1em" />
+                  </span>
+                  <span id="submit-loading" class="items-center gap-2" style="display:none;">
                     <span class="w-4 h-4 inline-block rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
                     Setting up checkout...
                   </span>
-                  <Icon name="arrow-right" size="1em" />
                 </button>
                 <p class="mt-3 text-xs text-center" style="color: var(--color-slate);">
                   Secure payment via Stripe · Cancel anytime after 12 months
@@ -213,6 +215,7 @@ if (!plan) {
       const form = document.getElementById('plan-signup-form');
       const submitBtn = document.getElementById('submit-btn');
       const submitLabel = document.getElementById('submit-label');
+      const submitText = document.getElementById('submit-text');
       const submitLoading = document.getElementById('submit-loading');
       const errorBanner = document.getElementById('form-error');
       const billingInput = document.getElementById('billing-input');
@@ -237,9 +240,9 @@ if (!plan) {
         });
 
         if (billing === 'monthly') {
-          submitLabel.textContent = `Continue to payment · $${planData.monthly}/mo`;
+          submitText.textContent = `Continue to payment · $${planData.monthly}/mo`;
         } else {
-          submitLabel.textContent = `Continue to payment · $${planData.annual}/yr`;
+          submitText.textContent = `Continue to payment · $${planData.annual}/yr`;
         }
       }
 
@@ -254,8 +257,8 @@ if (!plan) {
         e.preventDefault();
         errorBanner.classList.add('hidden');
         submitBtn.disabled = true;
-        submitLabel.classList.add('hidden');
-        submitLoading.classList.remove('hidden');
+        submitLabel.style.display = 'none';
+        submitLoading.style.display = 'inline-flex';
 
         const formData = new FormData(form);
         const payload = Object.fromEntries(formData.entries());
@@ -279,8 +282,8 @@ if (!plan) {
           errorBanner.textContent = err.message || 'Network error. Please check your connection.';
           errorBanner.classList.remove('hidden');
           submitBtn.disabled = false;
-          submitLabel.classList.remove('hidden');
-          submitLoading.classList.add('hidden');
+          submitLabel.style.display = 'inline-flex';
+          submitLoading.style.display = 'none';
         }
       });
     })();

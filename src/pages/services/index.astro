@@ -29,7 +29,7 @@ const grouped = Object.keys(categories).map((key) => ({
   description="Licensed plumbing, heating, and air conditioning services in Norwood, MA. AC repair, furnace installation, water heaters, emergency service, and more."
 >
   {/* Hero */}
-  <section class="relative py-20 lg:py-32 overflow-hidden" style="background: var(--color-ivory);">
+  <section class="relative py-14 lg:py-32 overflow-hidden" style="background: var(--color-ivory);">
     <div class="container-page relative">
       <div class="max-w-4xl" data-reveal>
         <span class="eyebrow">Our services</span>
@@ -47,11 +47,11 @@ const grouped = Object.keys(categories).map((key) => ({
   <TrustBar />
 
   {/* Services by category */}
-  <section class="py-24 lg:py-32" style="background: var(--color-ivory);">
+  <section class="py-16 lg:py-32" style="background: var(--color-ivory);">
     <div class="container-page">
       {grouped.map((group, gi) => (
         group.services.length > 0 && (
-          <div class={`grid lg:grid-cols-12 gap-8 lg:gap-16 ${gi > 0 ? 'mt-24 pt-24 dashed-top' : ''}`}>
+          <div class={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 ${gi > 0 ? 'mt-24 pt-24 dashed-top' : ''}`}>
             <div class="lg:col-span-4" data-reveal>
               <div class="lg:sticky lg:top-28">
                 <div class="w-14 h-14 rounded-full flex items-center justify-center mb-5"
@@ -98,8 +98,8 @@ const grouped = Object.keys(categories).map((key) => ({
   </section>
 
   {/* CTA / form */}
-  <section class="py-24 lg:py-32" style="background: var(--color-cream);">
-    <div class="container-page grid lg:grid-cols-12 gap-12 lg:gap-20">
+  <section class="py-16 lg:py-32" style="background: var(--color-cream);">
+    <div class="container-page grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
       <div class="lg:col-span-6 lg:sticky lg:top-28 self-start">
         <span class="eyebrow">Get started</span>
         <h2 class="mt-4 font-display text-4xl lg:text-[3.5rem]" style="font-weight:400; letter-spacing:-0.03em; line-height:1;">

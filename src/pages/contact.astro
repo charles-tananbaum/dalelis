@@ -9,9 +9,9 @@ import { SITE } from "~/lib/site";
   title={`Contact ${SITE.name} | Norwood, MA Plumbing & HVAC`}
   description={`Contact Dalelis Mechanical for licensed plumbing and HVAC service in Norwood, MA. Call ${SITE.phone} or schedule online 24/7.`}
 >
-  <section class="py-20 lg:py-32" style="background: var(--color-ivory);">
+  <section class="py-14 lg:py-32" style="background: var(--color-ivory);">
     <div class="container-page">
-      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
         {/* Left: content */}
         <div class="lg:col-span-5">
           <div data-reveal>
@@ -27,56 +27,56 @@ import { SITE } from "~/lib/site";
 
           <div class="mt-12 space-y-6" data-reveal>
             <a href={SITE.phoneTel}
-               class="block p-6 rounded-2xl transition-all hover:-translate-y-0.5"
+               class="block p-5 sm:p-6 rounded-2xl transition-all hover:-translate-y-0.5"
                style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: var(--color-ink); color: var(--color-ivory);">
+                <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-ink); color: var(--color-ivory);">
                   <Icon name="phone" size="1.15em" />
                 </div>
-                <div>
+                <div class="min-w-0 flex-1">
                   <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Call 24/7</div>
-                  <div class="font-display text-2xl" style="font-weight:500;">{SITE.phone}</div>
+                  <div class="font-display text-xl sm:text-2xl" style="font-weight:500;">{SITE.phone}</div>
                 </div>
               </div>
             </a>
 
             <a href={SITE.booking} target="_blank" rel="noopener noreferrer"
-               class="block p-6 rounded-2xl transition-all hover:-translate-y-0.5"
+               class="block p-5 sm:p-6 rounded-2xl transition-all hover:-translate-y-0.5"
                style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: var(--color-brass); color: var(--color-ivory);">
+                <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-brass); color: var(--color-ivory);">
                   <Icon name="calendar" size="1.15em" />
                 </div>
-                <div>
+                <div class="min-w-0 flex-1">
                   <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Online booking</div>
-                  <div class="font-display text-2xl" style="font-weight:500;">Schedule via Housecall Pro</div>
+                  <div class="font-display text-lg sm:text-2xl leading-tight" style="font-weight:500;">Schedule via Housecall Pro</div>
                 </div>
               </div>
             </a>
 
             <a href={SITE.emailMailto}
-               class="block p-6 rounded-2xl transition-all hover:-translate-y-0.5"
+               class="block p-5 sm:p-6 rounded-2xl transition-all hover:-translate-y-0.5"
                style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
+                <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
                   <Icon name="mail" size="1.15em" />
                 </div>
-                <div>
+                <div class="min-w-0 flex-1">
                   <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Email</div>
-                  <div class="font-display text-lg break-all" style="font-weight:500;">{SITE.email}</div>
+                  <div class="font-display text-base sm:text-lg break-all leading-tight" style="font-weight:500;">{SITE.email}</div>
                 </div>
               </div>
             </a>
 
-            <div class="p-6 rounded-2xl"
+            <div class="p-5 sm:p-6 rounded-2xl"
                  style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
               <div class="flex items-start gap-4">
                 <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
                   <Icon name="map-pin" size="1.15em" />
                 </div>
-                <div>
+                <div class="min-w-0 flex-1">
                   <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Address</div>
-                  <address class="not-italic mt-1 font-display text-lg" style="font-weight:500;">
+                  <address class="not-italic mt-1 font-display text-base sm:text-lg leading-snug" style="font-weight:500;">
                     {SITE.address.street}<br />
                     {SITE.address.city}, {SITE.address.state} {SITE.address.zip}
                   </address>
@@ -84,15 +84,15 @@ import { SITE } from "~/lib/site";
               </div>
             </div>
 
-            <div class="p-6 rounded-2xl"
+            <div class="p-5 sm:p-6 rounded-2xl"
                  style="background: var(--color-cream); border: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);">
               <div class="flex items-start gap-4">
                 <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center" style="background: var(--color-cream); color: var(--color-brass); border: 1px solid color-mix(in oklab, var(--color-ink) 15%, transparent);">
                   <Icon name="clock" size="1.15em" />
                 </div>
-                <div>
+                <div class="min-w-0 flex-1">
                   <div class="text-xs uppercase tracking-widest" style="color: var(--color-slate);">Hours</div>
-                  <div class="font-display text-lg mt-1" style="font-weight:500;">Open 24 / 7</div>
+                  <div class="font-display text-base sm:text-lg mt-1" style="font-weight:500;">Open 24 / 7</div>
                   <div class="text-sm mt-1" style="color: var(--color-slate);">Office callbacks: Mon–Fri 7am–6pm</div>
                 </div>
               </div>

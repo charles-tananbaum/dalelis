@@ -60,7 +60,7 @@ const heroImage = heroImages[service.data.category] ?? heroImages.hvac;
         <span style="color: var(--color-ink);">{service.data.title}</span>
       </nav>
 
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         <div class="lg:col-span-7" data-reveal>
           {service.data.emergency && (
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs uppercase tracking-widest mb-5"
@@ -109,8 +109,8 @@ const heroImage = heroImages[service.data.category] ?? heroImages.hvac;
   </section>
 
   {/* Overview body + side form */}
-  <section class="py-20 lg:py-28" style="background: var(--color-cream);">
-    <div class="container-page grid lg:grid-cols-12 gap-12 lg:gap-16">
+  <section class="py-14 lg:py-28" style="background: var(--color-cream);">
+    <div class="container-page grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
       <article class="lg:col-span-7 prose-article">
         <div class="max-w-prose">
           <span class="eyebrow">Overview</span>
@@ -186,7 +186,7 @@ const heroImage = heroImages[service.data.category] ?? heroImages.hvac;
 
   {/* Related */}
   {related.length > 0 && (
-    <section class="py-20 lg:py-28" style="background: var(--color-ivory);">
+    <section class="py-14 lg:py-28" style="background: var(--color-ivory);">
       <div class="container-page">
         <div class="flex items-end justify-between gap-6 mb-10">
           <div data-reveal>
