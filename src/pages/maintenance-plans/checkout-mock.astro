@@ -6,6 +6,13 @@ import { getPlanBySlug } from "~/lib/plans";
 // Read URL params at request time (not build time)
 export const prerender = false;
 
+// In any environment with a real Stripe key, redirect away from the mock.
+// This makes the mock unreachable in production while keeping it accessible
+// locally when STRIPE_SECRET_KEY is absent from .env.local.
+if (import.meta.env.STRIPE_SECRET_KEY) {
+  return Astro.redirect("/maintenance-plans/");
+}
+
 // Mock Stripe checkout — representative view only.
 // In production this entire page is replaced by Stripe's hosted checkout.
 const url = Astro.url;

@@ -11,3 +11,5 @@ dist/
 
 # Claude Code local settings (personal permission prefs)
 .claude/settings.local.json
+.vercel
+.env*.local

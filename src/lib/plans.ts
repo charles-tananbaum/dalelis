@@ -26,6 +26,16 @@ export interface Plan {
     annual: string;
     monthly: string;
   };
+  /**
+   * Stripe Price IDs for this plan.
+   * Annual → one-time payment Price; Monthly → recurring subscription Price.
+   * Replace placeholder strings with real IDs from the Stripe dashboard
+   * (Products → select plan → copy Price ID).
+   */
+  stripePriceIds: {
+    annual: string;
+    monthly: string;
+  };
 }
 
 export const PLANS: Plan[] = [
@@ -50,6 +60,10 @@ export const PLANS: Plan[] = [
       annual: "/maintenance-plans/checkout-mock?plan=heating&billing=annual&amount=199",
       monthly: "/maintenance-plans/checkout-mock?plan=heating&billing=monthly&amount=19",
     },
+    stripePriceIds: {
+      annual: "price_REPLACE_HEATING_ANNUAL",
+      monthly: "price_REPLACE_HEATING_MONTHLY",
+    },
   },
   {
     slug: "heating-cooling",
@@ -73,6 +87,10 @@ export const PLANS: Plan[] = [
       annual: "/maintenance-plans/checkout-mock?plan=heating-cooling&billing=annual&amount=399",
       monthly: "/maintenance-plans/checkout-mock?plan=heating-cooling&billing=monthly&amount=37",
     },
+    stripePriceIds: {
+      annual: "price_REPLACE_HEATING_COOLING_ANNUAL",
+      monthly: "price_REPLACE_HEATING_COOLING_MONTHLY",
+    },
   },
   {
     slug: "whole-home",
@@ -95,6 +113,10 @@ export const PLANS: Plan[] = [
     stripeUrls: {
       annual: "/maintenance-plans/checkout-mock?plan=whole-home&billing=annual&amount=549",
       monthly: "/maintenance-plans/checkout-mock?plan=whole-home&billing=monthly&amount=51",
+    },
+    stripePriceIds: {
+      annual: "price_REPLACE_WHOLE_HOME_ANNUAL",
+      monthly: "price_REPLACE_WHOLE_HOME_MONTHLY",
     },
   },
 ];
