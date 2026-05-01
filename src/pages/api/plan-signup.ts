@@ -119,7 +119,7 @@ export const POST: APIRoute = async ({ request }) => {
   const customerApt = unit.trim();
   const customerNotes = notes.trim();
   const priceId = plan.stripePriceIds[billingFreq];
-  const origin = import.meta.env.PUBLIC_SITE_URL as string;
+  const origin = new URL(request.url).origin;
 
   // ── Stripe Checkout session ──
   try {
@@ -142,6 +142,14 @@ export const POST: APIRoute = async ({ request }) => {
         amount_display: String(amount),
       },
     };
+
+    // For one-time payments, explicitly request receipt delivery regardless of
+    // the Dashboard "Successful payments" email toggle.
+    if (billingFreq === "annual") {
+      sessionParams.payment_intent_data = {
+        receipt_email: customerEmail,
+      };
+    }
 
     // Subscriptions need metadata duplicated on the subscription object itself
     // so the customer.subscription.deleted webhook can read it without an

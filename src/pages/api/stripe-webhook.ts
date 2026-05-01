@@ -17,7 +17,7 @@
 import type { APIRoute } from "astro";
 import type Stripe from "stripe";
 import { stripe } from "~/lib/stripe";
-import { createCustomer, addNoteToCustomer } from "~/lib/hcp";
+import { createCustomer, addNoteToCustomer, findCustomerByEmail, updateCustomerTags } from "~/lib/hcp";
 import { notifySignup, notifyCancellation } from "~/lib/notify";
 
 export const prerender = false;
@@ -71,12 +71,16 @@ export const POST: APIRoute = async ({ request }) => {
     const [addrStreet = "", addrCity = "", addrState = "", addrZip = ""] =
       customerAddress.split(", ");
 
+    // HCP requires exactly 10 digits — strip formatting and take last 10.
+    const digitsOnly = customerPhone.replace(/\D/g, "");
+    const hcpPhone = digitsOnly.length >= 10 ? digitsOnly.slice(-10) : "";
+
     try {
       const hcpId = await createCustomer({
         first_name: firstName,
         last_name: lastName,
         email: session.customer_email ?? "",
-        mobile_number: customerPhone,
+        mobile_number: hcpPhone,
         addresses: [
           {
             street: addrStreet,
@@ -87,7 +91,6 @@ export const POST: APIRoute = async ({ request }) => {
             type: "service",
           },
         ],
-        lead_source: "Website Membership",
         tags: [`plan:${planSlug}`, `billing:${billing}`],
         notifications_enabled: true,
       });
@@ -133,6 +136,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     const customerName = meta["customer_name"] ?? "Unknown";
     const planName = meta["plan_name"] ?? "Unknown plan";
+    const planSlug = meta["plan_slug"] ?? "";
+    const billing = meta["billing"] ?? "";
 
     // Retrieve email from the Stripe Customer object (not stored in sub metadata).
     let customerEmail = "";
@@ -149,6 +154,31 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     await notifyCancellation({ name: customerName, email: customerEmail, plan: planName });
+
+    // ── HCP cancellation updates ──
+    try {
+      const hcpId = customerEmail ? await findCustomerByEmail(customerEmail) : null;
+
+      if (hcpId) {
+        await updateCustomerTags(
+          hcpId,
+          [`plan:${planSlug}`, `billing:${billing}`],
+          ["plan:cancelled"],
+        );
+
+        const cancelledDate = new Date().toISOString().slice(0, 10);
+        await addNoteToCustomer(
+          hcpId,
+          `Membership cancelled ${cancelledDate}. Was on ${planName} (${billing}). Stripe subscription ${subscription.id}.`,
+        );
+      } else {
+        console.warn(
+          `[stripe-webhook] Cancellation: no HCP customer found for email ${customerEmail}. Manual follow-up may be required.`,
+        );
+      }
+    } catch (err) {
+      console.error("[stripe-webhook] HCP cancellation update failed:", err);
+    }
 
     console.log(`[stripe-webhook] Subscription cancelled: ${customerName} · ${planName}`);
 
