@@ -1,21 +1,26 @@
 /**
  * Notification helpers for business-owner alerts.
  *
- * Each exported function sends both an HTML email (via Resend) and an SMS
- * (via Twilio) to the owner simultaneously using Promise.all. Failures are
- * logged but never re-thrown — alert delivery failure must not cause a
- * Stripe webhook to return non-200.
+ * Each exported function attempts to deliver an HTML email (via Resend) and
+ * an SMS (via Twilio) to the owner in parallel. Both channels are
+ * independently optional: email is skipped silently if RESEND_API_KEY is
+ * unset, SMS is skipped silently if TWILIO_ACCOUNT_SID is unset. Failures are
+ * logged but never re-thrown — alert delivery must not cause a Stripe webhook
+ * to return non-200.
  *
- * Prerequisites:
- *   - Resend: verify the sending domain (dalelismechanical.com) at resend.com/domains
- *     before going live. The FROM_EMAIL constant below must match a verified address.
+ * Configuration:
+ *   - Resend: verify the sending domain at resend.com/domains. FROM_EMAIL
+ *     (env var) must match a verified address; defaults to the production
+ *     dalelismechanical.com identity.
  *   - Twilio: TWILIO_FROM_NUMBER must be a purchased/verified Twilio number.
  */
 
 import { Resend } from 'resend';
 import twilio from 'twilio';
 
-const FROM_EMAIL = 'Dalelis Mechanical <noreply@dalelismechanical.com>';
+const FROM_EMAIL =
+  (import.meta.env.FROM_EMAIL as string | undefined) ??
+  'Dalelis Mechanical <noreply@dalelismechanical.com>';
 
 function getResend(): Resend {
   return new Resend(import.meta.env.RESEND_API_KEY as string);
@@ -107,6 +112,11 @@ async function sendEmail(subject: string, html: string): Promise<void> {
 }
 
 async function sendSms(body: string): Promise<void> {
+  // SMS is optional — owner also receives email alert. Skip silently if Twilio not configured.
+  if (!import.meta.env.TWILIO_ACCOUNT_SID) {
+    console.log('[notify] TWILIO_ACCOUNT_SID not set, skipping SMS');
+    return;
+  }
   try {
     const client = getTwilio();
     await client.messages.create({
