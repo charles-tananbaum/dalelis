@@ -15,7 +15,7 @@
 
 import type { APIRoute } from "astro";
 import { getPlanBySlug, type BillingFrequency } from "~/lib/plans";
-import { stripe } from "~/lib/stripe";
+import { stripe, stripeMode } from "~/lib/stripe";
 
 export const prerender = false;
 
@@ -118,7 +118,7 @@ export const POST: APIRoute = async ({ request }) => {
   ].join(", ");
   const customerApt = unit.trim();
   const customerNotes = notes.trim();
-  const priceId = plan.stripePriceIds[billingFreq];
+  const priceId = plan.stripePriceIds[stripeMode][billingFreq];
   const origin = new URL(request.url).origin;
 
   // ── Stripe Checkout session ──

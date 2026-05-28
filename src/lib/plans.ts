@@ -27,14 +27,14 @@ export interface Plan {
     monthly: string;
   };
   /**
-   * Stripe Price IDs for this plan.
+   * Stripe Price IDs, split by mode. The signup flow picks test vs live based
+   * on the active STRIPE_SECRET_KEY (see `stripeMode` in lib/stripe.ts) — a
+   * test key cannot use live price IDs and vice versa.
    * Annual → one-time payment Price; Monthly → recurring subscription Price.
-   * Replace placeholder strings with real IDs from the Stripe dashboard
-   * (Products → select plan → copy Price ID).
    */
   stripePriceIds: {
-    annual: string;
-    monthly: string;
+    test: { annual: string; monthly: string };
+    live: { annual: string; monthly: string };
   };
 }
 
@@ -61,8 +61,14 @@ export const PLANS: Plan[] = [
       monthly: "/maintenance-plans/checkout-mock?plan=heating&billing=monthly&amount=19",
     },
     stripePriceIds: {
-      annual: "price_1TRzzGC79j4Jzw3undpYow8L",
-      monthly: "price_1TRzyHC79j4Jzw3uVmWzQOiI",
+      test: {
+        annual: "price_1TRzzGC79j4Jzw3undpYow8L",
+        monthly: "price_1TRzyHC79j4Jzw3uVmWzQOiI",
+      },
+      live: {
+        annual: "price_1Tc53WKbnxwyKnckifwbIlnH",
+        monthly: "price_1Tc53WKbnxwyKnckJiXdq3jv",
+      },
     },
   },
   {
@@ -88,8 +94,14 @@ export const PLANS: Plan[] = [
       monthly: "/maintenance-plans/checkout-mock?plan=heating-cooling&billing=monthly&amount=37",
     },
     stripePriceIds: {
-      annual: "price_1TRzzjC79j4Jzw3uJ74AEE1s",
-      monthly: "price_1TS008C79j4Jzw3ui8mnBDTq",
+      test: {
+        annual: "price_1TRzzjC79j4Jzw3uJ74AEE1s",
+        monthly: "price_1TS008C79j4Jzw3ui8mnBDTq",
+      },
+      live: {
+        annual: "price_1Tc53XKbnxwyKnckCrMWwCK9",
+        monthly: "price_1Tc53YKbnxwyKnckX4kJWxL6",
+      },
     },
   },
   {
@@ -115,8 +127,14 @@ export const PLANS: Plan[] = [
       monthly: "/maintenance-plans/checkout-mock?plan=whole-home&billing=monthly&amount=51",
     },
     stripePriceIds: {
-      annual: "price_1TS00YC79j4Jzw3uQ9qTtCva",
-      monthly: "price_1TS00uC79j4Jzw3uTUaLLa0c",
+      test: {
+        annual: "price_1TS00YC79j4Jzw3uQ9qTtCva",
+        monthly: "price_1TS00uC79j4Jzw3uTUaLLa0c",
+      },
+      live: {
+        annual: "price_1Tc53ZKbnxwyKnckNnJs4bXh",
+        monthly: "price_1Tc53ZKbnxwyKnckBtHKtq0S",
+      },
     },
   },
 ];

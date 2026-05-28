@@ -12,3 +12,14 @@ export const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY as string, {
   // error from Stripe itself, which is the correct failure mode.
   apiVersion: '2026-04-22.dahlia',
 });
+
+/**
+ * Which Stripe mode the active key targets. Price IDs are mode-specific
+ * (a test key can't use live prices), so the signup flow selects the right
+ * set from plans.ts based on this. Anything that isn't an sk_live key is
+ * treated as test.
+ */
+export const stripeMode: 'test' | 'live' =
+  (import.meta.env.STRIPE_SECRET_KEY as string | undefined)?.startsWith('sk_live')
+    ? 'live'
+    : 'test';
