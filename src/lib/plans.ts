@@ -21,10 +21,15 @@ export interface Plan {
   popular: boolean;
   visits: string;
   includes: string[];
-  /** Mock Stripe Payment Link URLs — replace with real ones when Stripe is connected */
-  stripeUrls: {
-    annual: string;
-    monthly: string;
+  /**
+   * Stripe Price IDs, split by mode. The signup flow picks test vs live based
+   * on the active STRIPE_SECRET_KEY (see `stripeMode` in lib/stripe.ts) — a
+   * test key cannot use live price IDs and vice versa.
+   * Annual → one-time payment Price; Monthly → recurring subscription Price.
+   */
+  stripePriceIds: {
+    test: { annual: string; monthly: string };
+    live: { annual: string; monthly: string };
   };
 }
 
@@ -46,9 +51,15 @@ export const PLANS: Plan[] = [
       "No overtime or trip charges",
       "Satisfaction guarantee",
     ],
-    stripeUrls: {
-      annual: "/maintenance-plans/checkout-mock?plan=heating&billing=annual&amount=199",
-      monthly: "/maintenance-plans/checkout-mock?plan=heating&billing=monthly&amount=19",
+    stripePriceIds: {
+      test: {
+        annual: "price_1TRzzGC79j4Jzw3undpYow8L",
+        monthly: "price_1TRzyHC79j4Jzw3uVmWzQOiI",
+      },
+      live: {
+        annual: "price_1Tc53WKbnxwyKnckifwbIlnH",
+        monthly: "price_1Tc53WKbnxwyKnckJiXdq3jv",
+      },
     },
   },
   {
@@ -69,9 +80,15 @@ export const PLANS: Plan[] = [
       "No overtime or trip charges",
       "Satisfaction guarantee",
     ],
-    stripeUrls: {
-      annual: "/maintenance-plans/checkout-mock?plan=heating-cooling&billing=annual&amount=399",
-      monthly: "/maintenance-plans/checkout-mock?plan=heating-cooling&billing=monthly&amount=37",
+    stripePriceIds: {
+      test: {
+        annual: "price_1TRzzjC79j4Jzw3uJ74AEE1s",
+        monthly: "price_1TS008C79j4Jzw3ui8mnBDTq",
+      },
+      live: {
+        annual: "price_1Tc53XKbnxwyKnckCrMWwCK9",
+        monthly: "price_1Tc53YKbnxwyKnckX4kJWxL6",
+      },
     },
   },
   {
@@ -92,9 +109,15 @@ export const PLANS: Plan[] = [
       "Priority scheduling year-round",
       "No overtime or trip charges",
     ],
-    stripeUrls: {
-      annual: "/maintenance-plans/checkout-mock?plan=whole-home&billing=annual&amount=549",
-      monthly: "/maintenance-plans/checkout-mock?plan=whole-home&billing=monthly&amount=51",
+    stripePriceIds: {
+      test: {
+        annual: "price_1TS00YC79j4Jzw3uQ9qTtCva",
+        monthly: "price_1TS00uC79j4Jzw3uTUaLLa0c",
+      },
+      live: {
+        annual: "price_1Tc53ZKbnxwyKnckNnJs4bXh",
+        monthly: "price_1Tc53ZKbnxwyKnckBtHKtq0S",
+      },
     },
   },
 ];

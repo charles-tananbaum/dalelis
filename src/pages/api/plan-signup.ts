@@ -1,18 +1,21 @@
 /**
  * POST /api/plan-signup
  *
- * Receives the maintenance plan intake form, then in order:
- *   1. Creates the customer in HousecallPro (TODO: real call — currently mocked)
- *   2. Sends an email to James notifying him of the new signup (TODO: real Resend call — currently mocked)
- *   3. Returns the Stripe Checkout URL for the selected plan + billing frequency
- *      (TODO: real Stripe API call — currently returns mock checkout URL)
+ * Receives the maintenance plan intake form, validates it, then creates a
+ * Stripe Checkout session and returns its URL. The browser redirects to
+ * Stripe's hosted checkout from there.
  *
- * Replace the three TODO sections with real integrations once Dalelis has
- * Stripe + Resend keys configured.
+ * HousecallPro customer creation happens AFTER confirmed payment, in the
+ * Stripe webhook handler (api/stripe-webhook.ts) — not here, because
+ * payment is not yet confirmed at this point.
+ *
+ * On success:  { success: true,  checkoutUrl: string }
+ * On error:    { success: false, error: string }  (status 400/422/500)
  */
 
 import type { APIRoute } from "astro";
 import { getPlanBySlug, type BillingFrequency } from "~/lib/plans";
+import { stripe, stripeMode } from "~/lib/stripe";
 
 export const prerender = false;
 
@@ -101,67 +104,84 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: "Please enter a valid phone number." }, 422);
   }
 
-  // ── Build customer data ──
-  const customerData = {
-    plan: plan.slug,
-    planName: plan.name,
-    billing: billing as BillingFrequency,
-    amount: billing === "annual" ? plan.annual : plan.monthly,
-    name: name!.trim(),
-    email: email!.trim(),
-    phone: phone!.trim(),
-    address: {
-      street: street!.trim(),
-      unit: unit.trim(),
-      city: city!.trim(),
-      state: state!.trim().toUpperCase(),
-      zip: zip!.trim(),
-    },
-    notes: notes.trim(),
-    paymentStatus: "pending" as const,
-    submittedAt: new Date().toISOString(),
-  };
+  // ── Build shared data ──
+  const billingFreq = billing as BillingFrequency;
+  const amount = billingFreq === "annual" ? plan.annual : plan.monthly;
+  const customerName = name!.trim();
+  const customerEmail = email!.trim();
+  const customerPhone = phone!.trim();
+  const customerAddress = [
+    street!.trim(),
+    city!.trim(),
+    state!.trim().toUpperCase(),
+    zip!.trim(),
+  ].join(", ");
+  const customerApt = unit.trim();
+  const customerNotes = notes.trim();
+  const priceId = plan.stripePriceIds[stripeMode][billingFreq];
+  const origin = new URL(request.url).origin;
 
-  // ── 1. HousecallPro (MOCKED) ──
-  // TODO: Replace with real HCP API call. Reference flow:
-  //   1. POST /customers (or look up by email/phone) to upsert customer
-  //   2. Add note + tag like `plan:heating` or `plan:whole-home`
-  //   3. Mark payment_status:pending; webhook (or success URL) updates to paid
-  console.log("[plan-signup] (MOCK) HCP customer upsert:", JSON.stringify(customerData, null, 2));
+  // ── Stripe Checkout session ──
+  try {
+    const sessionParams: Parameters<typeof stripe.checkout.sessions.create>[0] = {
+      mode: billingFreq === "annual" ? "payment" : "subscription",
+      line_items: [{ price: priceId, quantity: 1 }],
+      customer_email: customerEmail,
+      success_url: `${origin}/maintenance-plans/thanks/?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/maintenance-plans/sign-up/${plan.slug}/?billing=${billingFreq}`,
+      phone_number_collection: { enabled: false },
+      metadata: {
+        plan_slug: plan.slug,
+        plan_name: plan.name,
+        billing: billingFreq,
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        customer_address: customerAddress,
+        customer_apt: customerApt,
+        customer_notes: customerNotes,
+        amount_display: String(amount),
+      },
+    };
 
-  // ── 2. Email to James (MOCKED) ──
-  // TODO: Replace with real Resend / Postmark / SendGrid call.
-  //   Subject: "🛠️ New Plan Signup — {planName} ({billing})"
-  //   To: dalelismechanical@gmail.com
-  //   Body: customer details, plan info, payment status (pending)
-  console.log(
-    `[plan-signup] (MOCK) Email to James:\n` +
-      `  Subject: 🛠️ New ${plan.name} signup — ${customerData.name}\n` +
-      `  Billing: ${billing} ($${customerData.amount})\n` +
-      `  Customer: ${customerData.email} · ${customerData.phone}\n` +
-      `  Address: ${customerData.address.street}, ${customerData.address.city} ${customerData.address.zip}`
-  );
+    // For one-time payments, explicitly request receipt delivery regardless of
+    // the Dashboard "Successful payments" email toggle.
+    if (billingFreq === "annual") {
+      sessionParams.payment_intent_data = {
+        receipt_email: customerEmail,
+      };
+    }
 
-  // ── 3. Stripe Checkout (MOCKED) ──
-  // TODO: Replace with real Stripe call:
-  //   import Stripe from "stripe";
-  //   const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
-  //   const session = await stripe.checkout.sessions.create({
-  //     mode: billing === "monthly" ? "subscription" : "payment",
-  //     line_items: [{ price: priceIdFor(plan, billing), quantity: 1 }],
-  //     customer_email: email,
-  //     success_url: `${origin}/maintenance-plans/thanks?session_id={CHECKOUT_SESSION_ID}`,
-  //     cancel_url: `${origin}/maintenance-plans/sign-up/${plan.slug}/?billing=${billing}`,
-  //     metadata: { plan: plan.slug, billing, hcp_customer_id: ... },
-  //   });
-  //   return jsonResponse({ success: true, checkoutUrl: session.url });
-  const mockCheckoutUrl = `/maintenance-plans/checkout-mock?plan=${plan.slug}&billing=${billing}&amount=${customerData.amount}&name=${encodeURIComponent(customerData.name)}&email=${encodeURIComponent(customerData.email)}`;
+    // Subscriptions need metadata duplicated on the subscription object itself
+    // so the customer.subscription.deleted webhook can read it without an
+    // extra API call to retrieve the originating checkout session.
+    if (billingFreq === "monthly") {
+      sessionParams.subscription_data = {
+        metadata: {
+          plan_slug: plan.slug,
+          plan_name: plan.name,
+          billing: billingFreq,
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          customer_address: customerAddress,
+          customer_apt: customerApt,
+          customer_notes: customerNotes,
+          amount_display: String(amount),
+        },
+      };
+    }
 
-  return jsonResponse({
-    success: true,
-    checkoutUrl: mockCheckoutUrl,
-    plan: plan.slug,
-    billing,
-    amount: customerData.amount,
-  });
+    const session = await stripe.checkout.sessions.create(sessionParams);
+
+    return jsonResponse({
+      success: true,
+      checkoutUrl: session.url,
+      plan: plan.slug,
+      billing: billingFreq,
+      amount,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Stripe error.";
+    console.error("[plan-signup] Stripe session creation failed:", err);
+    return jsonResponse({ success: false, error: message }, 500);
+  }
 };
