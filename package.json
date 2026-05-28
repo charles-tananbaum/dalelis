@@ -18,6 +18,9 @@
     "@astrojs/vercel": "^8.2.11",
     "@tailwindcss/vite": "4.0.14",
     "astro": "5.1.10",
-    "tailwindcss": "4.0.14"
+    "resend": "^6.12.2",
+    "stripe": "^22.1.0",
+    "tailwindcss": "4.0.14",
+    "twilio": "^6.0.0"
   }
 }
