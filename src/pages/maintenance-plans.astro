@@ -154,6 +154,29 @@ const benefits = [
         </div>
       </div>
 
+      {/* Cancellation contact */}
+      <div class="mt-5 max-w-3xl mx-auto p-6 rounded-2xl" style="background: var(--color-cream); border: 1px dashed var(--color-sand);" data-reveal>
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--color-ivory); color: var(--color-brass);">
+            <Icon name="phone" size="1.05em" />
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="font-display text-base lg:text-lg mb-1" style="font-weight:500;">Need to cancel an existing plan?</div>
+            <div class="text-sm mb-3" style="color: var(--color-slate);">
+              Reach out to James directly — he'll handle the cancellation and confirm the effective date.
+            </div>
+            <div class="flex flex-col sm:flex-row gap-x-5 gap-y-2 text-sm">
+              <a href={SITE.phoneTel} class="inline-flex items-center gap-2 hover:underline" style="color: var(--color-ink); font-weight:500;">
+                <Icon name="phone" size="0.95em" /> {SITE.phone}
+              </a>
+              <a href={SITE.emailMailto} class="inline-flex items-center gap-2 hover:underline break-all" style="color: var(--color-ink); font-weight:500;">
+                <Icon name="mail" size="0.95em" /> {SITE.email}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <p class="text-center text-xs mt-8 max-w-2xl mx-auto" style="color: var(--color-slate);">
         12-month initial commitment. Cancel anytime after with 30 days' notice. Repairs and parts billed separately from plan membership.
       </p>
