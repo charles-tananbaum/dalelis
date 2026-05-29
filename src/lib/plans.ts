@@ -69,7 +69,7 @@ export const PLANS: Plan[] = [
     tagline: "Heating AND cooling",
     annual: 399,
     monthly: 37, // ~$444/yr equivalent
-    popular: true,
+    popular: false,
     visits: "2 visits per year",
     includes: [
       "Spring AC tune-up",
@@ -98,7 +98,7 @@ export const PLANS: Plan[] = [
     tagline: "Heating, cooling + plumbing",
     annual: 549,
     monthly: 51, // ~$612/yr equivalent
-    popular: false,
+    popular: true,
     visits: "2 HVAC + 1 plumbing visit per year",
     includes: [
       "Spring AC + Fall heating tune-ups",
