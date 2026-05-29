@@ -98,12 +98,16 @@ async function sendEmail(subject: string, html: string): Promise<void> {
   try {
     const resend = getResend();
     const monitor = import.meta.env.MONITOR_EMAIL as string | undefined;
+    const ownerEmail = import.meta.env.OWNER_EMAIL as string;
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
-      to: import.meta.env.OWNER_EMAIL as string,
+      to: ownerEmail,
       // BCC a monitoring address (e.g. FieldPass) for visibility on every alert.
       // Silently omitted when MONITOR_EMAIL is unset.
       ...(monitor ? { bcc: monitor } : {}),
+      // Replies route to owner's real inbox — the alerts@ sender address is
+      // outbound-only (no MX on the dalelismechanical.com domain).
+      replyTo: ownerEmail,
       subject,
       html,
     });
