@@ -11,6 +11,12 @@ const benefits = [
   { icon: "shield", title: "Warranty protection", body: "Most manufacturer warranties require annual professional service." },
   { icon: "award", title: "Longer equipment life", body: "Maintained systems last 15–20 years instead of 8–12." },
 ];
+
+// Self-serve Stripe Customer Portal (cancel, update card, see invoices).
+// Set STRIPE_PORTAL_URL in env once the portal is configured at:
+//   Stripe Dashboard → Settings → Billing → Customer Portal
+// If unset, the page falls back to the call/email-only contact card.
+const PORTAL_URL = import.meta.env.STRIPE_PORTAL_URL as string | undefined;
 ---
 
 <BaseLayout
@@ -154,17 +160,30 @@ const benefits = [
         </div>
       </div>
 
-      {/* Cancellation contact */}
+      {/* Manage / cancel existing plan */}
       <div class="mt-5 max-w-3xl mx-auto p-6 rounded-2xl" style="background: var(--color-cream); border: 1px dashed var(--color-sand);" data-reveal>
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--color-ivory); color: var(--color-brass);">
-            <Icon name="phone" size="1.05em" />
+            <Icon name="gear" size="1.05em" />
           </div>
           <div class="min-w-0 flex-1">
-            <div class="font-display text-base lg:text-lg mb-1" style="font-weight:500;">Need to cancel an existing plan?</div>
-            <div class="text-sm mb-3" style="color: var(--color-slate);">
-              Reach out to James directly — he'll handle the cancellation and confirm the effective date.
+            <div class="font-display text-base lg:text-lg mb-1" style="font-weight:500;">Manage or cancel an existing plan</div>
+            <div class="text-sm mb-4" style="color: var(--color-slate);">
+              {PORTAL_URL
+                ? "Use the self-serve portal below to cancel, update your card, or download past receipts — or reach out to James directly."
+                : "Reach out to James directly — he'll handle the cancellation and confirm the effective date."}
             </div>
+
+            {PORTAL_URL && (
+              <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium mb-4 transition-all hover:-translate-y-0.5"
+                 style="background: var(--color-ink); color: var(--color-ivory); box-shadow: var(--shadow-soft);">
+                <Icon name="gear" size="0.95em" />
+                Manage your subscription
+                <span style="opacity:0.6">→</span>
+              </a>
+            )}
+
             <div class="flex flex-col sm:flex-row gap-x-5 gap-y-2 text-sm">
               <a href={SITE.phoneTel} class="inline-flex items-center gap-2 hover:underline" style="color: var(--color-ink); font-weight:500;">
                 <Icon name="phone" size="0.95em" /> {SITE.phone}
