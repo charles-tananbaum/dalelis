@@ -1,6 +1,6 @@
 # Dalelis Mechanical — Website
 
-A modern, SEO-optimized rebuild of [dalelismechanical.com](https://www.dalelismechanical.com).
+A modern, SEO-optimized rebuild of [dalelismechanicalco.com](https://www.dalelismechanicalco.com).
 Built with Astro 5, Tailwind CSS 4, and TypeScript.
 
 ---
@@ -42,7 +42,7 @@ Requires Node 20.19+ or Node 22.12+.
 ```
 dalelis/
 ├── content/
-│   └── source-audit.md             # content audit from the original dalelismechanical.com
+│   └── source-audit.md             # content audit from the original dalelismechanicalco.com
 ├── public/
 │   ├── favicon.svg
 │   ├── robots.txt

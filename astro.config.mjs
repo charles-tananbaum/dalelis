@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://www.dalelismechanical.com',
+  site: 'https://www.dalelismechanicalco.com',
   // Hybrid mode: pages are static by default, but routes can opt into SSR
   // by exporting `export const prerender = false`. This lets the maintenance
   // plan signup endpoint run server-side while keeping the rest of the site

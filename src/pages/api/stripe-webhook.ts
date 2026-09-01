@@ -10,7 +10,7 @@
  *   customer.subscription.deleted — notify owner of cancellation
  *
  * Configure in Stripe dashboard: Developers → Webhooks → Add endpoint
- *   URL: https://www.dalelismechanical.com/api/stripe-webhook
+ *   URL: https://www.dalelismechanicalco.com/api/stripe-webhook
  *   Events: checkout.session.completed, customer.subscription.deleted
  */
 

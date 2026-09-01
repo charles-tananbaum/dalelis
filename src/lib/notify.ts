@@ -11,7 +11,7 @@
  * Configuration:
  *   - Resend: verify the sending domain at resend.com/domains. FROM_EMAIL
  *     (env var) must match a verified address; defaults to the production
- *     dalelismechanical.com identity.
+ *     dalelismechanicalco.com identity.
  *   - Twilio: TWILIO_FROM_NUMBER must be a purchased/verified Twilio number.
  */
 
@@ -20,7 +20,7 @@ import twilio from 'twilio';
 
 const FROM_EMAIL =
   (import.meta.env.FROM_EMAIL as string | undefined) ??
-  'Dalelis Mechanical <noreply@dalelismechanical.com>';
+  'Dalelis Mechanical <noreply@dalelismechanicalco.com>';
 
 function getResend(): Resend {
   return new Resend(import.meta.env.RESEND_API_KEY as string);
@@ -106,7 +106,7 @@ async function sendEmail(subject: string, html: string): Promise<void> {
       // Silently omitted when MONITOR_EMAIL is unset.
       ...(monitor ? { bcc: monitor } : {}),
       // Replies route to owner's real inbox — the alerts@ sender address is
-      // outbound-only (no MX on the dalelismechanical.com domain).
+      // outbound-only (no MX on the dalelismechanicalco.com domain).
       replyTo: ownerEmail,
       subject,
       html,

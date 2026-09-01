@@ -45,7 +45,7 @@ export const SITE = {
   facebook: "https://www.facebook.com/dalelisplumbing/",
 
   // Site URL
-  url: "https://www.dalelismechanical.com",
+  url: "https://www.dalelismechanicalco.com",
 };
 
 export const BRANDS_HVAC = [
